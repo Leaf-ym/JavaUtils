@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active: dev
+  redis:
+    host: 106.52.24.31
+    port: 25518
+    password: Hjk20198s3dhfQAi201011aol
+    timeout: 5000
+    jedis:
+      pool:
+        max-idle: 10
+        min-idle: 3
+        max-wait: 200
+        max-active: 1000
+    datasource:
+      initSQL: set names utf8mb4
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.zaxxer.hikari.HikariDataSource
+      hikari:
+        minimum-idle: 5
+        maximum-pool-size: 15
+        idle-timeout: 30000
+        pool-name: DatebookHikariCP
+        max-lifetime: 120000
+        connection-test-query: SELECT 1
+        auto-commit: true
+        connection-timeout: 30000
+    servlet:
+      multipart:
+        max-file-size: 50MB
+        max-request-size: 100MB

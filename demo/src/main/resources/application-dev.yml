@@ -1,0 +1,20 @@
+server:
+  port: 11000
+
+swagger:
+  enabled: true
+
+spring:
+  redis:
+    database: 1
+    host: 106.52.24.31
+    port: 25518
+    password: Hjk20198s3dhfQAi201011aol
+  datasource:
+    url: jdbc:mysql://39.98.150.146:16086/nurseTest?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useJDBCCompliantTimezoneShift=true&allowMultiQueries=true
+    username: videoAdmin
+    password: Video654321
+  data:
+    mongodb:
+      uri: mongodb://root:developPass@39.98.150.146:27017
+      database: develop

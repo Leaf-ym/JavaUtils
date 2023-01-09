@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9195314d-7960-4839-8fbb-90c778100fdf" name="默认的" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../../../../../.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/anotation/DatabaseField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/enums/ResponseEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/model/BasicTypeEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/model/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/model/GenderEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/model/NewUserBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/model/Pager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/DatabaseUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/HttpUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/IdCardUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/JwtTokenUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/MyScheduleExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/PrintUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/ThreadUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/ValidateUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/为null的Integer变量不能赋给int变量.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/建设银行回调通知签名验证.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/当Integer变量为128时的比较情况.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/打印一个除去最后一个字符的字符串.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/数据类型的默认值.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/生成年份序列.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/案例/认识枚举.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../DateUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../array/将字符串数组变成整数数字数组.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../array/过滤数组.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../array/遍历数组.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../area-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../degree-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../education-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../huawei-area-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nation-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zywyhReZhi-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zywyhRenZhiJob-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../politic-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../positionTitle-data-1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../zhiwu-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../method/CommonUtil.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../method/huawei-area-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../保留两位小数.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../字符串换行.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../截取出生年、出生月和出生日.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../把json字符串转化为对象.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../把对象转换为json字符串.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../提取某个省份的城市和区县.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../身份证处理.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../netpay.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../../test/java/util/DatabaseUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../../test/java/util/IdCardUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../../test/java/util/ResponseEnumTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../../test/java/util/StringUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../../test/java/util/ValidateUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/AESUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/AESUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/ArrayUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/ArrayUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/BeanUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/BeanUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/CommonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/CommonUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/DateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/DateUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/JSONUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/JSONUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/MD5Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/Md5Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/MathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/MathUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/SignatureUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/SignatureUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/StringUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/StringUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../java/com/ncepu/util/TokenUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../正则表达式.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../正则表达式.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../过滤数组.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../遍历对象.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../遍历对象.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/AESUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/AESUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/ArrayUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/ArrayUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/BeanUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/BeanUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/CommonUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/CommonUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/DateUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/DateUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/JSONUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/JSONUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/MD5Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/MD5Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/MathUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/MathUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/SignatureUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/SignatureUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/StringUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/StringUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/com/ncepu/util/TokenUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/js/正则表达式.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/js/正则表达式.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/js/过滤数组.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../../target/classes/js/遍历对象.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../target/classes/js/遍历对象.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../../.." />
+  </component>
+  <component name="ProjectId" id="27xBFFUxFtE0bz0h696J9g6oEof" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../../../../ningxiaNurse" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9195314d-7960-4839-8fbb-90c778100fdf" name="默认的" comment="" />
+      <created>1650251750282</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1650251750282</updated>
+      <workItem from="1650251751554" duration="88000" />
+      <workItem from="1650335807536" duration="14000" />
+      <workItem from="1651913780647" duration="22000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="271" key="FileChooserDialogImpl" timestamp="1651913801070">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="740" y="271" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1651913801070" />
+  </component>
+</project>
