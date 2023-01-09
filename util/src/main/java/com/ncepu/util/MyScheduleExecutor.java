@@ -26,11 +26,11 @@ public class MyScheduleExecutor implements Runnable {
     }
 
     public static void main(String[] args) {
-        // 创建任务队列
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10); // 10 为线程数量
-        // 执行任务
+        // 创建任务队列，10为线程数量
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        // 执行任务，1s 后开始执行，每 3s 执行一次
         scheduledExecutorService.scheduleAtFixedRate(
-                new MyScheduleExecutor("wengym"), 1, 3, TimeUnit.SECONDS); // 1s 后开始执行，每 3s 执行一次
+                new MyScheduleExecutor("wengym"), 1, 3, TimeUnit.SECONDS);
 
     }
 }
