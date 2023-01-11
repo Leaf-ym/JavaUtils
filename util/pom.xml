@@ -112,11 +112,11 @@
             <artifactId>easyexcel</artifactId>
             <version>3.1.1</version>
         </dependency>
-        <!-- JavaWeb依赖 -->
+        <!-- Servlet依赖，Servlet是JavaEE下的技术标准，不是JDK的组成部分，所以需要引入servlet-api.jar包 -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>4.0.1</version>
         </dependency>
         <!-- spring核心库依赖 -->
         <dependency>

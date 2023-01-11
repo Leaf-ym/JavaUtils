@@ -13,7 +13,16 @@ import org.junit.Test;
 public class GraphicVerificationCodeUtilsTest {
     @Test
     public void testGetImageCode() {
-        String r1 = GraphicVerificationCodeUtils.getBase64ImageCode();
+        String code = GraphicVerificationCodeUtils.getStrCode(5);
+        String r1 = GraphicVerificationCodeUtils.getBase64ImageCode(code);
         PrintUtils.println(r1);
+    }
+
+    @Test
+    public void testGetStrCode() {
+        for (int i = 0; i < 10; i++) {
+            String r1 = GraphicVerificationCodeUtils.getStrCode(5);
+            PrintUtils.println(r1);
+        }
     }
 }

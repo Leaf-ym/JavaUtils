@@ -1,1 +1,0 @@
-console.log("字符串换行","asd\nsdfsd");
