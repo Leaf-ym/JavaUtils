@@ -62,6 +62,8 @@ public class GraphicVerificationCodeUtils {
         // 设置图像的背景颜色，白色
         g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, width, height);
+        // 消除线条和文字的锯齿
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         // 绘制干扰线，BasicStroke控制线宽
         g.setStroke(new BasicStroke(1.5f));
         for (int i = 0; i < 15; i++) {
