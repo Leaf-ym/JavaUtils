@@ -40,17 +40,84 @@ public class DateUtils {
     public static final Integer[] MONTH_MAX_DAY = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     /**
+     * 获取月份
+     *
+     * @param date
+     * @param format
+     * @return java.lang.String
+     * @author wengym
+     * @date 2023/1/16 15:09
+     */
+    public static Integer getMonth(String date, String format) {
+        if (date == null || date.trim().equals("")) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Integer month = 0;
+        try {
+            Calendar cal = sdf.getCalendar();
+            cal.setTime(sdf.parse(date));
+            month = cal.get(Calendar.MONTH);
+            // 月份是从0开始算起的，所以0为1月，1为2月，11为12月
+            month = month + 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return month;
+    }
+
+    /**
+     * 获取季度
+     *
+     * @param date
+     * @param format
+     * @return java.lang.String
+     * @author wengym
+     * @date 2023/1/16 15:09
+     */
+    public static Integer getQuarter(String date, String format) {
+        if (date == null || date.trim().equals("")) {
+            return null;
+        }
+        Integer month = getMonth(date, format);
+        // 向上取整，获取季度
+        int quarter = (int) Math.ceil(month / 3.0);
+        return quarter;
+    }
+
+    /**
+     * 获取年份
+     *
+     * @param date
+     * @param format
+     * @return java.lang.String
+     * @author wengym
+     * @date 2023/1/16 15:09
+     */
+    public static Integer getYear(String date, String format) {
+        if (date == null || date.trim().equals("")) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Integer year = 0;
+        try {
+            Calendar cal = sdf.getCalendar();
+            cal.setTime(sdf.parse(date));
+            year = cal.get(Calendar.YEAR);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return year;
+    }
+
+    /**
      * 指定时间相比当前时间是否超时了minutes分钟，超时了为true，不超时则为false
      *
      * @param datetime
-     *
      * @param minutes
-     *
-     * @author wengym
-     *
-     * @date 2022/9/26 15:22
-     *
      * @return boolean
+     * @author wengym
+     * @date 2022/9/26 15:22
      */
     public static boolean compareWithNow(String datetime, Integer minutes) {
         Calendar calendar = Calendar.getInstance();
@@ -67,11 +134,9 @@ public class DateUtils {
     /**
      * 获取有效开始日期
      *
-     * @author wengym
-     *
-     * @date 2022/9/7 13:39
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/7 13:39
      */
     public static String getStartDate() {
         String startDate = DateUtils.getNowYear() + "-01-01";
@@ -81,11 +146,9 @@ public class DateUtils {
     /**
      * 获取有效结束日期
      *
-     * @author wengym
-     *
-     * @date 2022/9/7 13:39
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/7 13:39
      */
     public static String getEndDate(int year) {
         String endDate = (DateUtils.getNowYear() + year - 1) + "-12-31";
@@ -95,11 +158,9 @@ public class DateUtils {
     /**
      * 获取当前年份
      *
-     * @author wengym
-     *
-     * @date 2022/9/7 13:55
-     *
      * @return int
+     * @author wengym
+     * @date 2022/9/7 13:55
      */
     public static int getNowYear() {
         Calendar calendar = Calendar.getInstance();
@@ -201,14 +262,10 @@ public class DateUtils {
      * 获取当前时间的num个月的时间
      *
      * @param format
-     *
      * @param num
-     *
-     * @author wengym
-     *
-     * @date 2022/9/27 16:30
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/27 16:30
      */
     public static String getNowDateAfterNumMonth(String format, int num) {
         Date date = new Date();
@@ -225,14 +282,10 @@ public class DateUtils {
      * 获取当前时间的num年后的时间
      *
      * @param format
-     *
      * @param num
-     *
-     * @author wengym
-     *
-     * @date 2022/9/27 16:24
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/27 16:24
      */
     public static String getNowDateAfterNumYear(String format, int num) {
         Date date = new Date();
@@ -423,12 +476,9 @@ public class DateUtils {
      * 获取昨天的日期
      *
      * @param format
-     *
-     * @author wengym
-     *
-     * @date 2022/10/11 20:15
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/10/11 20:15
      */
     public static String getYesterdayDateStr(String format) {
         String str = getAfterDayDateStr(format, -1);

@@ -16,6 +16,16 @@ import java.util.regex.Pattern;
  */
 public class DateUtilsTest {
     @Test
+    public void getMonth() {
+        Integer r1 = DateUtils.getMonth("2022-12-25 12:05:05", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        PrintUtils.println(r1);
+        int r2 = DateUtils.getQuarter("2022-08-25 12:05:07", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        PrintUtils.println(r2);
+        int r3 = DateUtils.getYear("2022-08-25 12:05:07", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        PrintUtils.println(r3);
+    }
+
+    @Test
     public void dealTime() {
         String time1 = "2022-10-22 07:48:55,2022-10-22 14:03:43,2022-10-22 16:05:19,2022-10-22 16:06:24";
         String time2 = "5时43分,1时59分,0时1分,0时30分";
