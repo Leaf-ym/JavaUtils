@@ -48,12 +48,9 @@ public class FileUtils {
      * 查询符合正则表达式的字符串集合
      *
      * @param regex
-     *
-     * @author wengym
-     *
-     * @date 2022/11/4 10:45
-     *
      * @return java.util.Set<java.lang.String>
+     * @author wengym
+     * @date 2022/11/4 10:45
      */
     public static Set<String> getStrSet(String regex, File file) {
         if (!file.isFile()) {
@@ -64,7 +61,7 @@ public class FileUtils {
             byte[] arr = new byte[1024];
             int readLength = 0;
             StringBuilder sb = new StringBuilder();
-            while((readLength = in.read(arr)) > -1) {
+            while ((readLength = in.read(arr)) > -1) {
                 sb.append(new String(arr, 0, readLength));
             }
             PrintUtils.println(sb.toString());
@@ -82,7 +79,7 @@ public class FileUtils {
         Set<String> resultSet = new HashSet<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(str);
-        while(matcher.find()) {
+        while (matcher.find()) {
             resultSet.add(str.substring(matcher.start(), matcher.end()));
         }
         return resultSet;
@@ -272,12 +269,9 @@ public class FileUtils {
      * URL编码
      *
      * @param url
-     *
-     * @author wengym
-     *
-     * @date 2022/9/7 9:55
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/7 9:55
      */
     public static String urlEncode(String url) {
         String result = "";
@@ -296,12 +290,9 @@ public class FileUtils {
      * URL解码
      *
      * @param url
-     *
-     * @author wengym
-     *
-     * @date 2022/9/7 9:55
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/9/7 9:55
      */
     public static String urlDecode(String url) {
         String result = "";
@@ -320,12 +311,9 @@ public class FileUtils {
      * 获取网络文件的输入流
      *
      * @param url
-     *
-     * @author wengym
-     *
-     * @date 2022/9/19 11:48
-     *
      * @return java.io.InputStream
+     * @author wengym
+     * @date 2022/9/19 11:48
      */
     public static InputStream getInputStreamFromUrl(String url) {
         try {
@@ -386,6 +374,38 @@ public class FileUtils {
                     if (in != null) {
                         in.close();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 下载字节数组文件
+     *
+     * @param bytes
+     *
+     * @param savePath
+     *
+     * @author wengym
+     *
+     * @date 2023/2/21 8:53
+     *
+     * @return void
+     */
+    public static void downloadBytesFile(byte[] bytes, String savePath) {
+        savePath = FileUtils.urlDecode(savePath);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(savePath);
+            out.write(bytes, 0, bytes.length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
