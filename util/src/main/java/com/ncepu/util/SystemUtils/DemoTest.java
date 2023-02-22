@@ -23,7 +23,8 @@ public class DemoTest {
 
     @Test
     public void testOne() throws UnknownHostException {
-        SystemInfo systemInfo = new SystemInfo(); // 初始化的时候static已经判断了是什么操作系统
+        // 初始化的时候static已经判断了是什么操作系统
+        SystemInfo systemInfo = new SystemInfo();
         System.out.println("操作系统是：" + systemInfo.getOperatingSystem());
         //先判断是什么操作系统
         System.out.println("是否是window系统：" + Platform.isWindows());
