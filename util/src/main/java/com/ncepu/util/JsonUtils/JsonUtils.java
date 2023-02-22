@@ -1,8 +1,9 @@
-package com.ncepu.util;
+package com.ncepu.util.JsonUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ncepu.util.DateUtils;
 
 import java.util.*;
 
@@ -13,6 +14,38 @@ import java.util.*;
  * @date 2021/11/3 11:10
  */
 public class JsonUtils {
+
+    /**
+     * 处理json字符串中value多余的双引号， 将多余的双引号替换为中文双引号
+     *
+     * @param jsonStr
+     *
+     * @author wengym
+     *
+     * @date 2023/2/15 13:45
+     *
+     * @return java.lang.String
+     */
+    public static String toJsonString(String jsonStr) {
+        char[] tempArr = jsonStr.toCharArray();
+        int tempLength = tempArr.length;
+        for (int i = 0; i < tempLength; i++) {
+            if (tempArr[i] == ':' && tempArr[i + 1] == '"') {
+                for (int j = i + 2; j < tempLength; j++) {
+                    if (tempArr[j] == '"') {
+                        if (tempArr[j + 1] != ',' && tempArr[j + 1] != '}') {
+                            // 将value中的英文双引号替换为中文双引号
+                            tempArr[j] = '”';
+                        } else if (tempArr[j + 1] == ',' || tempArr[j + 1] == '}') {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return new String(tempArr);
+    }
+
     /**
      * 分析字符串以获取JSON数组
      *

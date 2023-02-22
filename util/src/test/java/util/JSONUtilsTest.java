@@ -1,7 +1,7 @@
 package util;
 
 import com.alibaba.fastjson.JSONArray;
-import com.ncepu.util.JsonUtils;
+import com.ncepu.util.JsonUtils.JsonUtils;
 import com.ncepu.util.PrintUtils;
 import org.junit.Test;
 
