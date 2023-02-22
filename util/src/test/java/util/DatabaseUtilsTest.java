@@ -136,7 +136,7 @@ public class DatabaseUtilsTest {
         newUserBean1.setId(100);
         newUserBean1.setMlId(1000);
         newUserBean1.setUserName("wengym");
-        newUserBean1.setPassword("123456");
+        newUserBean1.setPassword("123'45'6");
         newUserBean1.setUpdateDate(new Date());
         NewUserBean newUserBean2 = new NewUserBean();
         newUserBean2.setId(200);

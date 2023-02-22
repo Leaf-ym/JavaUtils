@@ -1,9 +1,6 @@
 package com.ncepu.util.DatabaseUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author wengym
@@ -34,6 +31,27 @@ public class BaseDaoProvider {
         Map<String, Object> databaseValue = new HashMap<>();
         databaseValue.put("fillDate", "now()");
         String sql = DatabaseUtils.insert(tableName, cls, model, ignoreFieldSet, databaseValue);
+        return sql;
+    }
+
+    /**
+     * 通用的批量插入语句构造方法
+     *
+     * @param list
+     *
+     * @author wengym
+     *
+     * @date 2023/2/16 13:46
+     *
+     * @return java.lang.String
+     */
+    public <T> String commonBatchInsert(List<T> list, Class cls) {
+        String tableName = DatabaseUtils.getTableName(cls);
+        Set<String> ignoreFieldSet = new HashSet<>();
+        ignoreFieldSet.add(DatabaseUtils.getPrimaryKey(cls.getClass()));
+        Map<String, Object> databaseValue = new HashMap<>();
+        databaseValue.put("fillDate", "now()");
+        String sql = DatabaseUtils.batchInsert(tableName, cls, list, ignoreFieldSet, databaseValue);
         return sql;
     }
 

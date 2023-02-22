@@ -699,6 +699,24 @@ public class DatabaseUtils {
         return commonUpdateClause;
     }
 
+    /**
+     * 获取map普通的查询条件，忽略字段集合默认为空，表别名默认为空，默认非空查询
+     *
+     * @param cls 数据表对应的model的Class对象
+     *
+     * @param queryMap 查询条件
+     *
+     * @author wengym
+     *
+     * @date 2023/1/18 11:13
+     *
+     * @return java.lang.String
+     */
+    public static String commonSearch(Class<?> cls, Map<String, Object> queryMap) {
+        String str = commonSearch(cls, queryMap, asSet(""), "", true);
+        return str;
+    }
+
     /***
      *
      * 获取map普通的查询条件
@@ -927,6 +945,11 @@ public class DatabaseUtils {
             return result;
         }
         if ("java.lang.String".equals(fieldType) || "String".equals(fieldType)) {
+            String str = (String)value;
+            if (str.contains("'")) {
+                // 单引号，防止SQL注入
+                return "'" + str.replaceAll("'", "\\\\'") + "'";
+            }
             result = "'" + value + "'";
         } else if ("java.util.Date".equals(fieldType) || "Date".equals(fieldType)) {
             result = "'" + value.toString() + "'";
