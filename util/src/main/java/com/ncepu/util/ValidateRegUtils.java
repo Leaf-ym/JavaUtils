@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @desc 数据校验工具类
  * @date 2022/4/27 16:31
  */
-public class ValidateUtils {
+public class ValidateRegUtils {
 
     /***
      *

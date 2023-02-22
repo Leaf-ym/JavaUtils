@@ -1,7 +1,7 @@
 package util;
 
 import com.ncepu.util.PrintUtils;
-import com.ncepu.util.ValidateUtils;
+import com.ncepu.util.ValidateRegUtils;
 import org.junit.Test;
 
 /**
@@ -10,10 +10,10 @@ import org.junit.Test;
  * @desc 校验工具类测试
  * @date 2022/4/27 16:34
  */
-public class ValidateUtilsTest {
+public class ValidateRegUtilsTest {
     @Test
     public void testValid() {}
     public static void main(String[] args) {
-        PrintUtils.println("邮政编码测试：" + ValidateUtils.checkPostCode("321001"));
+        PrintUtils.println("邮政编码测试：" + ValidateRegUtils.checkPostCode("321001"));
     }
 }
