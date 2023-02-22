@@ -17,6 +17,20 @@ import java.util.HashMap;
  */
 public class QrCodeUtilsTest {
     @Test
+    public void testGetQrCodeOfLogo() {
+        String logo = "D:\\测试\\logo\\1.png";
+        BufferedImage image = QrCodeUtils.getQrCodeOfLogo("http://www.baidu.com", new HashMap<String, Object>() {{
+            put("width", 300);
+            put("height", 300);
+            put("margin", 10);
+            put("bgColor", new Color(255, 255, 255));
+            put("logoPath", logo);
+        }});
+        String filePath = "D:\\测试\\" + System.currentTimeMillis() + ".png";
+        ImageUtils.writeTo(image, "png", filePath);
+    }
+
+    @Test
     public void testTetQrCodeContent() {
         String filePath = "D:\\测试\\" + "1673575102726.png";
         String r1 = QrCodeUtils.getQrCodeContent((BufferedImage)ImageUtils.getImage(filePath));
@@ -31,12 +45,13 @@ public class QrCodeUtilsTest {
     }
     @Test
     public void testGetQrCodeImage() {
-        BufferedImage image = QrCodeUtils.getQrCodeImage("http://www.baidu.com", new HashMap<String, Object>() {{
-            put("width", 500);
-            put("height", 500);
-            put("margin", 50);
-            put("bgColor", new Color(0, 0, 255));
-        }});
+        /*BufferedImage image = QrCodeUtils.getQrCodeImage("http://www.baidu.com", new HashMap<String, Object>() {{
+            put("width", 300);
+            put("height", 300);
+            put("margin", 10);
+            put("bgColor", new Color(255, 255, 255));
+        }});*/
+        BufferedImage image = QrCodeUtils.getQrCodeImage("http://www.baidu.com", new HashMap<>());
         String filePath = "D:\\测试\\" + System.currentTimeMillis() + ".png";
         ImageUtils.writeTo(image, "png", filePath);
     }

@@ -6,14 +6,14 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -116,7 +116,146 @@ public class QrCodeUtils {
     }
 
     /**
+     * 生成指定宽度和高度的带有特定颜色边距的Base64格式的二维码
+     *
+     * @param content
+     *
+     * @param configMap - margin
+     *                  - bgColor Color
+     *                  - width
+     *                  - height
+     *
+     * @author wengym
+     *
+     * @date 2023/2/20 17:01
+     *
+     * @return java.awt.image.BufferedImage
+     */
+    public static String getQrCodeOfBase64(String content, Map<String, Object> configMap) {
+        BufferedImage image = getQrCodeImage(content, configMap);
+        String base64 = getBase64Data(image);
+        return base64;
+    }
+
+    /**
+     * 把缓存图像编码成base64格式的字符串
+     *
+     * @param image
+     * @return java.lang.String
+     * @author wengym
+     * @date 2022/10/17 10:39
+     */
+    public static String getBase64Data(BufferedImage image) {
+        if (image == null) {
+            throw new NullPointerException("image");
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            return null;
+        }
+        String base64 = "data:image/png;base64," + Base64.encode(out.toByteArray());
+        return base64;
+    }
+
+    /**
+     * 生成指定宽度和高度的带有特定颜色边距的中间有logo的二维码
+     *
+     * @param content
+     *
+     * @param configMap - margin
+     *                  - bgColor Color
+     *                  - width
+     *                  - height
+     *                  - logoPath
+     *
+     * @author wengym
+     *
+     * @date 2023/2/20 17:01
+     *
+     * @return java.awt.image.BufferedImage
+     */
+    public static BufferedImage getQrCodeOfLogo(String content, Map<String, Object> configMap) {
+        BufferedImage source = getQrCodeImage(content, configMap);
+        String imagePath = (String)configMap.get("logoPath");
+        source = insertImage(source, imagePath, true);
+        return source;
+    }
+
+    /**
+     * 在源图片中插入中间图片
+     *
+     * @param source
+     *
+     * @param imagePath
+     *
+     * @param needCompress
+     *
+     * @author wengym
+     *
+     * @date 2023/2/22 8:55
+     *
+     * @return BufferedImage
+     */
+    public static BufferedImage insertImage(BufferedImage source, String imagePath, boolean needCompress) {
+        File file = new File(imagePath);
+        if (!file.exists()) {
+            System.err.println("" + imagePath + "   该文件不存在！");
+            return null;
+        }
+        // LOGO的默认宽高
+        final int WIDTH = 60;
+        final int HEIGHT = 60;
+        Image src = null;
+        try {
+            src = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int width = src.getWidth(null);
+        int height = src.getHeight(null);
+        if (needCompress) {
+            // 压缩LOGO
+            if (width > WIDTH) {
+                width = WIDTH;
+            }
+            if (height > HEIGHT) {
+                height = HEIGHT;
+            }
+            Image image = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics g = tag.getGraphics();
+            // 绘制缩小后的图
+            g.drawImage(image, 0, 0, null);
+            g.dispose();
+            src = image;
+        }
+        // 插入LOGO
+        Graphics2D graph = source.createGraphics();
+        int x = (source.getWidth() - width) / 2;
+        int y = (source.getHeight() - height) / 2;
+        graph.drawImage(src, x, y, width, height, null);
+        Shape shape = new RoundRectangle2D.Float(x, y, width, height, 6, 6);
+        graph.setStroke(new BasicStroke(3f));
+        graph.draw(shape);
+        graph.dispose();
+        return source;
+    }
+
+    /**
      * 生成指定宽度和高度的带有特定颜色边距的二维码
+     * 如果不传configMap，默认生成长宽都是300，没有外边距，背景颜色是白色的二维码
      *
      * @param content
      *
