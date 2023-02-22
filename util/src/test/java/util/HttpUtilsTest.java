@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.ncepu.model.NewUserBean;
 import com.ncepu.model.UserDTO;
 import com.ncepu.model.UserRegisterModel;
-import com.ncepu.util.BeanUtils;
-import com.ncepu.util.CollectionUtils;
-import com.ncepu.util.HttpUtils;
-import com.ncepu.util.PrintUtils;
+import com.ncepu.util.*;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -44,6 +42,13 @@ public class HttpUtilsTest {
         headers.put("token", token);
         String content1 = HttpUtils.get(url1, new HashMap<>(), headers, null);
         PrintUtils.println(content1);
+    }
 
+    @Test
+    public void testGet() {
+        String url = "https://dppt.guangdong.chinatax.gov.cn:8443/kpfw/fpjfzz/v1/exportDzfpwjEwm?Wjgs=PDF&Kprq=20230220190058&Fphm=23442000000016852894&Czsj=1676890836569&Jym=C43C";
+        byte[] bytes = HttpUtils.getBytes(url, new HashMap<>(), new HashMap<>());
+        String savePath = "D:\\测试\\" + System.currentTimeMillis() + ".pdf";
+        FileUtils.downloadBytesFile(bytes, savePath);
     }
 }

@@ -106,6 +106,52 @@ public class HttpUtils {
     }
 
     /**
+     * 直接获取相应内容的字节数组
+     *
+     * @param url
+     *
+     * @param params
+     *
+     * @param headers
+     *
+     * @author wengym
+     *
+     * @date 2023/2/21 8:52
+     *
+     * @return byte[]
+     */
+    public static byte[] getBytes(String url, Map<String, Object> params, Map<String, Object> headers) {
+        System.out.println("访问URL为：[" + url + "]，请求参数为：[" + params + "]，请求头为：[" + headers + "]");
+        // 参数预处理
+        if (url == null || url.trim().length() == 0) {
+            return null;
+        }
+        // 定义GET方法
+        GetMethod method = new GetMethod(url);
+        // 设置请求头
+        dealGetHeader(method, headers);
+        // 处理请求参数
+        dealGetParams(method, params);
+        // 请求方法并返回响应内容
+        byte[] content = null;
+        try {
+            // 请求方法
+            HttpClient httpClient = new HttpClient();
+            Integer statusCode = httpClient.executeMethod(method);
+            System.out.println("GET请求的状态码为：[" + statusCode + "]，状态行为[" + method.getStatusLine() + "]");
+            // 获取响应内容，直接返回字节数组
+           content = method.getResponseBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (method != null) {
+                method.releaseConnection();
+            }
+        }
+        return content;
+    }
+
+    /**
      * HTTP的POST请求
      *
      * @param url
