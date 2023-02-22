@@ -1,6 +1,6 @@
 package util;
 
-import com.ncepu.util.FileUtils;
+import com.ncepu.util.ImageUtils;
 import com.ncepu.util.PrintUtils;
 import com.ncepu.util.SystemUtils.SystemUtils;
 import org.junit.Test;
@@ -14,6 +14,16 @@ import java.awt.*;
  * @date 2023/1/9 10:36
  */
 public class SystemUtilsTest {
+    @Test
+    public void testGetMemoryInfo() {
+        String r1 = SystemUtils.getMemoryInfo();
+        PrintUtils.println(r1);
+        String r2 = SystemUtils.getJvmInfo();
+        PrintUtils.println(r2);
+        String r3 = SystemUtils.getOSInfo();
+        PrintUtils.println(r3);
+    }
+
     @Test
     public void testSetClipboardStr() {
         String text = "剪贴板内容";
@@ -33,6 +43,6 @@ public class SystemUtilsTest {
         //Image image = FileUtils.getImageFromUrl("https://nursevideo.oss-cn-beijing.aliyuncs.com/bjaim/2022/812749e1a307f38fd0a88b54bea55ff21667910813812.png");
         String suffix = "png";
         String filePath = "D:\\测试\\" + System.currentTimeMillis() + "." + suffix;
-        FileUtils.writeTo(image, suffix, filePath);
+        ImageUtils.writeTo(image, suffix, filePath);
     }
 }
