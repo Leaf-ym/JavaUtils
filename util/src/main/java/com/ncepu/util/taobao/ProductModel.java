@@ -1,5 +1,7 @@
 package com.ncepu.util.taobao;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,13 +21,16 @@ public class ProductModel {
     /**
      * 产品标题
      */
+    @ExcelProperty("标题")
     private String raw_title;
     /**
      * 销量
      */
+    @ExcelIgnore
     private String view_sales;
     /**
      * 处理后的销量
      */
+    @ExcelProperty("销量")
     private Integer view_sales_num;
 }

@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,16 +23,43 @@ import java.util.regex.Pattern;
  */
 public class ProductSearchUtils {
 
-    public static String taoBaoSearch() {
+    /**
+     * 淘宝产品搜索
+     *
+     * @param key 搜索关键词，不能为空
+     *
+     * @param cookie
+     *
+     * @param pageIndex 页码，从1开始，1表示第一页
+     *
+     * @author wengym
+     *
+     * @date 2023/3/21 14:02
+     *
+     * @return java.lang.String
+     */
+    public static String taoBaoSearch(String key, String cookie, Integer pageIndex, String initiative_id) {
+        if (key == null || key.trim().equals("")) {
+            throw new NullPointerException("搜索关键词不能为空");
+        }
         try {
-            String url = "https://s.taobao.com/search?data-key=sort&data-value=sale-desc&ajax=true&_ksTS=1679361563031_934&callback=jsonp935&q=%E6%9D%AF%E5%AD%90&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20230321&ie=utf8&sort=sale-desc";
+            key = URLEncoder.encode(key, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (pageIndex == null) {
+            pageIndex = 1;
+        }
+        Integer pageSize = (pageIndex - 1) * 44;
+        try {
+            String url = "https://s.taobao.com/search?data-key=s&data-value="+pageSize+"&ajax=true&_ksTS=1679378121470_971&callback=jsonp972&q="+key+"&imgfile=&js=1&stats_click=search_radio_all:1&initiative_id="+initiative_id+"&ie=utf8&sort=sale-desc&bcoffset=0&p4ppushleft=,44&s=0&ntoffset=18&style=grid";
             URL realUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("Referer", "https://s.taobao.com/search?q=杯子&imgfile=&js=1&stats_click=search_radio_all:1&initiative_id=staobaoz_20230321&ie=utf8");
+            connection.setRequestProperty("Referer", "https://s.taobao.com/search?q="+key+"&imgfile=&js=1&stats_click=search_radio_all:1&initiative_id="+initiative_id+"&ie=utf8");
             connection.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36");
-            connection.setRequestProperty("Cookie", "cna=QAqTG1FX3UcCAXF3HHwKnAkC; t=91aca7b8b400cb7eae07523fb89a71fb; _m_h5_tk=f8b1ed1d4178c20bb5e767cc4719a8f5_1679368134464; _m_h5_tk_enc=6ab91ff663046c91db5036e68b93bd74; xlly_s=1; _samesite_flag_=true; cookie2=1a8d98bac0dde6d19bad1a5f9eae05e0; _tb_token_=e0b3b8b747535; sgcookie=E100ncyWwxvyY0xuOxm1ZQTBrka31o+YZleJhoCYUEUP4RcSh2vNuX1iQ47oYAjnUb6Ju3nataIJ44bOHetff+e73usQIi7DIMkC8lPOBtJhfjk=; unb=2215597361037; uc1=cookie14=UoezRmXnWKZ3Nw==&cookie21=U+GCWk/7pY/F&cookie16=VT5L2FSpNgq6fDudInPRgavC+Q==&pas=0&cookie15=U+GCWk/75gdr5Q==&existShop=false; uc3=vt3=F8dCsfeV6RxlvEE2Aas=&lg2=Vq8l+KCLz3/65A==&nk2=F5RBw5OAPqp/XSJLOg==&id2=UUpgQyzbDtqEX1e9Vw==; csg=f81f6155; lgc=tb46198901265; cancelledSubSites=empty; cookie17=UUpgQyzbDtqEX1e9Vw==; dnk=tb46198901265; skt=7a40f3d5bcf7f12d; existShop=MTY3OTM1OTU2MA==; uc4=nk4=0@FY4KpmmlWsGsOP33GOFtkkxxtAR4Sd9G&id4=0@U2gqzJqpAeFUnsRk6/zeZEQmw6NLCbyf; tracknick=tb46198901265; _cc_=WqG3DMC9EA==; _l_g_=Ug==; sg=57c; _nk_=tb46198901265; cookie1=URmvxY0ZNe8RWfHso9785r2mKFsowCHpRYw8IRHyNdU=; JSESSIONID=F41EA52380120DCFAA6B0061510133B6; isg=BL-_QRxD5-7jS-RcIgXivzkQTpNJpBNGKRdJsVGM_261YN7iWXG-lno2ojCeOOu-; l=fBachbogT33DHu4XBO5Bnurza779PIRb8sPzaNbMiIEGa6thtF94INCsB3-eSdtjgTfY-etz5TzfvdE2riadg2HvCbKrCyClrxJ6-bpU-L5..; tfstk=cq8NBdcTEV3ZiyRxewb2LXiFLuIOZTdMiy55jxdZ-nnznasGi2eAt3MfTsNUnGf..");
+            connection.setRequestProperty("Cookie", cookie);
             // 建立实际的连接
             connection.connect();
             //请求成功
@@ -53,16 +82,34 @@ public class ProductSearchUtils {
         return null;
     }
 
-    public static List<ProductModel> getProductList(String scriptStr) {
-        Matcher m = Pattern.compile("g_page_config.*;").matcher(scriptStr);
-        String g_page_config = null;
-        while (m.find()) {
-            g_page_config = m.group();
+    /**
+     * TODO
+     *
+     * @param key - 搜索关键词
+     * @param page - 搜索多少页
+     * @param url
+     * @param cookie
+     *
+     * @author wengym
+     *
+     * @date 2023/3/21 14:22
+     *
+     * @return java.util.List<com.ncepu.util.taobao.ProductModel>
+     */
+    public static List<ProductModel> getProductListBySort(String key, Integer page, String url, String cookie) {
+        if (page == null || page == 0 || page < 0) {
+            page = 1;
         }
-        g_page_config = g_page_config.replace("g_page_config = ", "");
-        g_page_config = g_page_config.replace(";", "");
-        JSONObject jsonObject = JSON.parseObject(g_page_config);
-        return null;
+        String initiative_id = getPropertyValue(url, "initiative_id");
+        String jsonString = null;
+        List<ProductModel> list = null;
+        List<ProductModel> resultList = new ArrayList<>();
+        for (int i = 1; i <= page; i++) {
+            jsonString = ProductSearchUtils.taoBaoSearch(key, cookie, i, initiative_id);
+            list = ProductSearchUtils.getProductListBySort(jsonString);
+            resultList.addAll(list);
+        }
+        return resultList;
     }
 
     public static List<ProductModel> getProductListBySort(String scriptStr) {
@@ -71,7 +118,7 @@ public class ProductSearchUtils {
         JSONArray jsonArray = jsonObject.getJSONObject("mods").getJSONObject("itemlist").getJSONObject("data").getJSONArray("auctions");
         List<ProductModel> list = new ArrayList<>();
         for (Object o : jsonArray) {
-            JSONObject product = (JSONObject)o;
+            JSONObject product = (JSONObject) o;
             list.add(ProductModel.builder()
                     .raw_title(product.getString("raw_title"))
                     .view_sales(product.getString("view_sales"))
@@ -88,5 +135,18 @@ public class ProductSearchUtils {
             view_sales = view_sales.replace("万", "0000");
             model.setView_sales_num(Integer.valueOf(view_sales));
         }
+    }
+
+    public static String  getPropertyValue(String url, String key) {
+        url = url.replaceFirst("\\?", "?&");
+        url = url + "&";
+        Matcher m = Pattern.compile("&"+key+".*?&").matcher(url);
+        String value = "";
+        while(m.find()) {
+            value = m.group();
+        }
+        value = value.replace("&", "");
+        value = value.split("=")[1];
+        return value;
     }
 }
