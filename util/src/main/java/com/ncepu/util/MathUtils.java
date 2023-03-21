@@ -14,6 +14,10 @@ import java.util.Random;
  * @author 123
  */
 public class MathUtils {
+    public static String getPercentNum(double num, int scale) {
+        String r1 = toFixed(num * 100, scale);
+        return r1 + "%";
+    }
 
     public static Integer toInteger(String numStr) {
         Integer num = Integer.valueOf(numStr);

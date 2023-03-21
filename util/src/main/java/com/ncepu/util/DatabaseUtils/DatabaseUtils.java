@@ -805,6 +805,54 @@ public class DatabaseUtils {
     }
 
     /**
+     * 获取查询model参数
+     *
+     * @param model
+     *
+     * @param whereFieldSet
+     *
+     * @param alias
+     *
+     * @param isEmptyNotQuery
+     *
+     * @author wengym
+     *
+     * @date 2022/12/19 16:57
+     *
+     * @return com.nursehealth.util.common.DatabaseUtils.model.SearchModelParam
+     */
+    public static <T> SearchModelParam getSearchModelParam(T model, Set<String> whereFieldSet, String alias, Boolean isEmptyNotQuery) {
+        SearchModelParam<T> searchModelParam = new SearchModelParam<>();
+        searchModelParam.setModel(model);
+        searchModelParam.setWhereFieldSet(whereFieldSet);
+        searchModelParam.setAlias(alias);
+        searchModelParam.setIsEmptyNotQuery(isEmptyNotQuery);
+        return searchModelParam;
+    }
+
+    /**
+     * 获取查询model参数，别名默认为空，是否非空查询默认为true
+     *
+     * @param model
+     *
+     * @param whereFieldSet
+     *
+     * @author wengym
+     *
+     * @date 2023/3/20 16:33
+     *
+     * @return com.nursehealth.util.common.DatabaseUtils.model.SearchModelParam
+     */
+    public static <T> SearchModelParam getSearchModelParam(T model, Set<String> whereFieldSet) {
+        SearchModelParam<T> searchModelParam = new SearchModelParam<>();
+        searchModelParam.setModel(model);
+        searchModelParam.setAlias("");
+        searchModelParam.setWhereFieldSet(whereFieldSet);
+        searchModelParam.setIsEmptyNotQuery(true);
+        return searchModelParam;
+    }
+
+    /**
      * 处理并返回处理后的别名
      *
      * @param alias
@@ -860,6 +908,44 @@ public class DatabaseUtils {
             return "0.0";
         }
         return "''";
+    }
+
+    /**
+     * 获取特定数据类型的值
+     *
+     * @param value
+     *
+     * @param dataType
+     *
+     * @author wengym
+     *
+     * @date 2023/2/27 17:39
+     *
+     * @return java.lang.Object
+     */
+    public static Object getValue(String value, String dataType) {
+        if (dataType == null || dataType.isEmpty()) {
+            return null;
+        }
+        if ("Short".equals(dataType) || "java.lang.Short".equals(dataType)) {
+            return Short.valueOf(value);
+        }
+        if ("Integer".equals(dataType) || "java.lang.Integer".equals(dataType)) {
+            return Integer.valueOf(value);
+        }
+        if ("Long".equals(dataType) || "java.lang.Long".equals(dataType)) {
+            return Long.valueOf(value);
+        }
+        if ("Boolean".equals(dataType) || "java.lang.Boolean".equals(dataType)) {
+            return Boolean.valueOf(value);
+        }
+        if ("Float".equals(dataType) || "java.lang.Float".equals(dataType)) {
+            return Float.valueOf(value);
+        }
+        if ("Double".equals(dataType) || "java.lang.Double".equals(dataType)) {
+            return Double.valueOf(value);
+        }
+        return null;
     }
 
     /***
@@ -944,19 +1030,51 @@ public class DatabaseUtils {
         if (value == null) {
             return result;
         }
+        final String SINGLE_QUOTATION_MARK = "'";
         if ("java.lang.String".equals(fieldType) || "String".equals(fieldType)) {
             String str = (String)value;
             if (str.contains("'")) {
                 // 单引号，防止SQL注入
-                return "'" + str.replaceAll("'", "\\\\'") + "'";
+                str = str.replaceAll("'", "\\\\'");
             }
-            result = "'" + value + "'";
+            if (getSlashNumOfEnd(str) % 2 != 0 ) {
+                // 结尾反斜杠处理：\
+                str = str + "\\";
+            }
+            result = SINGLE_QUOTATION_MARK + str + SINGLE_QUOTATION_MARK;
         } else if ("java.util.Date".equals(fieldType) || "Date".equals(fieldType)) {
-            result = "'" + value.toString() + "'";
+            result = SINGLE_QUOTATION_MARK + value.toString() + SINGLE_QUOTATION_MARK;
         } else {
             result = value + "";
         }
         return result;
+    }
+
+    /**
+     * 获取字符串末尾的反斜杠数量，如：123\\\，反斜杠数量为3
+     *
+     * @param str
+     *
+     * @author wengym
+     *
+     * @date 2023/3/9 11:18
+     *
+     * @return java.lang.Integer
+     */
+    public static Integer getSlashNumOfEnd(String str) {
+        if (isNullStr(str)) {
+            return 0;
+        }
+        Integer cnt = 0;
+        for (Integer i = str.length() - 1; i >= 0; i-- ) {
+            if (str.charAt(i) == '\\') {
+                ++cnt;
+            }
+            if (str.charAt(i) != '\\') {
+                break;
+            }
+        }
+        return cnt;
     }
 
     /***
@@ -1322,5 +1440,33 @@ public class DatabaseUtils {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 设置bean中的某个字段的值
+     *
+     * @param
+     *
+     * @author wengym
+     *
+     * @date 2023/2/27 17:23
+     *
+     * @return java.lang.Object
+     */
+    public static <T> void setFieldValue(String fieldName, Object value, T bean) {
+        Class cls = bean.getClass();
+        try {
+            Field field = cls.getDeclaredField(fieldName);
+            if (value != null) {
+                if (!field.getType().getTypeName().contains("String")) {
+                    value = getValue((String)value, field.getType().getTypeName());
+                }
+            }
+            field.setAccessible(true);
+            field.set(bean, value);
+            field.setAccessible(false);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 }

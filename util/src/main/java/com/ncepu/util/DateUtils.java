@@ -522,7 +522,7 @@ public class DateUtils {
         DateUtils.formatTimeBySeconds(3600);
         System.out.println("当前秒级的时间戳：" + DateUtils.getNowSecondTimestamp());
         System.out.println("时间差：" + DateUtils.getDiffSecondOfDateTime("2021-11-02 10:55:30", "2021-11-02 10:54:00", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS));
-        System.out.println("时间合法性：" + DateUtils.validateDate("2022-12-31", DateUtils.FORMAT_YYYY_MM_DD));
+        System.out.println("时间合法性：" + DateUtils.validateDate("2022-1-1", DateUtils.FORMAT_YYYY_MM_DD));
         System.out.println("时间字符串格式化：" + DateUtils.getDateStr("2022-01-12 11:01:30", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, DateUtils.FORMAT_YYYY));
         System.out.println("前几天的时间：" + DateUtils.getAfterDayDateStr(DateUtils.FORMAT_YYYY_MM_DD, -14));
         System.out.println("两个时间的比较：" + DateUtils.compareTwoDateTime("2022-03-24", "2022-03-23", DateUtils.FORMAT_YYYY_MM_DD));
