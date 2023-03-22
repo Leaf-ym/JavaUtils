@@ -3,6 +3,7 @@ package com.ncepu.util.taobao;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ncepu.util.EasyExcelUtils.EasyExcelUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -83,7 +84,37 @@ public class ProductSearchUtils {
     }
 
     /**
-     * TODO
+     * 导出产品标题
+     *
+     * @param list
+     *
+     * @param outPath
+     *
+     * @author wengym
+     *
+     * @date 2023/3/22 14:20
+     *
+     * @return void
+     */
+    public static void getProductTitles(List<ProductModel> list, String outPath) {
+        if (list == null || list.isEmpty()) {
+            throw new NullPointerException("产品信息列表不能为空");
+        }
+        List<List<String>> headList = new ArrayList<>();
+        headList.add(new ArrayList<String>() {{
+            add("产品标题");
+        }});
+        List<List<String>> dataList = new ArrayList<>();
+        for (ProductModel model : list) {
+            dataList.add(new ArrayList<String>() {{
+                add(model.getRaw_title());
+            }});
+        }
+        EasyExcelUtils.exportFile(dataList, headList, outPath);
+    }
+
+    /**
+     * 获取产品信息列表
      *
      * @param key - 搜索关键词
      * @param page - 搜索多少页
@@ -96,23 +127,34 @@ public class ProductSearchUtils {
      *
      * @return java.util.List<com.ncepu.util.taobao.ProductModel>
      */
-    public static List<ProductModel> getProductListBySort(String key, Integer page, String url, String cookie) {
+    public static List<ProductModel> getProductList(String key, Integer page, String url, String cookie) {
         if (page == null || page == 0 || page < 0) {
             page = 1;
         }
         String initiative_id = getPropertyValue(url, "initiative_id");
-        String jsonString = null;
-        List<ProductModel> list = null;
+        String jsonString;
+        List<ProductModel> list;
         List<ProductModel> resultList = new ArrayList<>();
         for (int i = 1; i <= page; i++) {
             jsonString = ProductSearchUtils.taoBaoSearch(key, cookie, i, initiative_id);
-            list = ProductSearchUtils.getProductListBySort(jsonString);
+            list = ProductSearchUtils.getProductList(jsonString);
             resultList.addAll(list);
         }
         return resultList;
     }
 
-    public static List<ProductModel> getProductListBySort(String scriptStr) {
+    /**
+     * 获取产品信息列表
+     *
+     * @param scriptStr
+     *
+     * @author wengym
+     *
+     * @date 2023/3/22 8:53
+     *
+     * @return java.util.List<com.ncepu.util.taobao.ProductModel>
+     */
+    private static List<ProductModel> getProductList(String scriptStr) {
         scriptStr = scriptStr.replaceAll("jsonp[0-9]*\\(", "").replace(");", "");
         JSONObject jsonObject = JSON.parseObject(scriptStr);
         JSONArray jsonArray = jsonObject.getJSONObject("mods").getJSONObject("itemlist").getJSONObject("data").getJSONArray("auctions");
