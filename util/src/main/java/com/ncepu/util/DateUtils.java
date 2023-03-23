@@ -1,8 +1,4 @@
-package com.ncepu.util;/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.ncepu.util;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -38,6 +34,22 @@ public class DateUtils {
      * 每个月份的天数
      */
     public static final Integer[] MONTH_MAX_DAY = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    /**
+     * 返回指定格式的当前时间
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/3/23 10:19
+     *
+     * @return java.lang.String
+     */
+    public static String getNowDate(String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date());
+    }
 
     /**
      * 获取月份

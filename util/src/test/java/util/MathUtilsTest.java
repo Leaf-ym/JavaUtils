@@ -1,9 +1,7 @@
 package util;
 
-import com.ncepu.util.MapUtils;
 import com.ncepu.util.MathUtils;
 import com.ncepu.util.PrintUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -13,6 +11,17 @@ import org.junit.Test;
  * @date 2022/6/20 11:52
  */
 public class MathUtilsTest {
+    @Test
+    public void testIntegerCompare() {
+        Integer v1 = 178;
+        Integer v2 = 366;
+        Integer v3 = 366;
+        PrintUtils.println(v1 > v2);
+        PrintUtils.println(v2 == v3);
+        PrintUtils.println(v2.equals(v3));
+        PrintUtils.println(v1 < v2);
+    }
+
     @Test
     public void testGetRandom() {
         for (int i = 0; i <= 20; i++) {

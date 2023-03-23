@@ -16,6 +16,14 @@ import java.util.regex.Pattern;
  */
 public class DateUtilsTest {
     @Test
+    public void testGetNowDate() {
+        String r1 = DateUtils.getNowDate(DateUtils.FORMAT_YYYYMMDDHHMISS);
+        PrintUtils.println(r1);
+        String r2 = DateUtils.getNowDate(DateUtils.FORMAT_YYYY_MM_DD);
+        PrintUtils.println(r2);
+    }
+
+    @Test
     public void getMonth() {
         Integer r1 = DateUtils.getMonth("2022-12-25 12:05:05", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
         PrintUtils.println(r1);

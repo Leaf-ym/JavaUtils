@@ -3,10 +3,7 @@ package util;
 import com.ncepu.util.*;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class AESUtilsTest {
     @Test
     public void batchEncryptTest() throws IOException {
         // 批量加密
-        List<String> list = ArrayUtils.toList("13516335657");
+        List<String> list = ArrayUtils.toList("13359588568");
         List<String> originList = new ArrayList<>();
         List<String> encryptList = new ArrayList<>();
         for (String str : list) {
