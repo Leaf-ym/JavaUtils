@@ -25,6 +25,8 @@ public class ProductSearchUtilsTest {
         List<TailPinWordModel> longTailList = EasyExcelUtils.readFile(filePath, TailPinWordModel.class);
         ProductSearchUtils.getProductTailPinList(longTailList);
         PrintUtils.println(longTailList);
+        List<TailPinWordModel> filterList = ProductSearchUtils.filterTailPin(longTailList, 0, 800);
+        PrintUtils.println(filterList);
     }
 
     @Test

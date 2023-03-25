@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author wengym
@@ -81,6 +82,26 @@ public class ProductSearchUtils {
     }
 
     /**
+     * 过滤掉不在最小和最大区间内容的尾销词
+     *
+     * @param list
+     * @param min
+     * @param max
+     * @return void
+     * @author wengym
+     * @date 2023/3/25 20:14
+     */
+    public static List<TailPinWordModel> filterTailPin(List<TailPinWordModel> list, Integer min, Integer max) {
+        if (list == null || list.isEmpty()) {
+            return list;
+        }
+        List<TailPinWordModel> filterList = list.stream().filter(
+                item -> item.getTailPinNum() != null && item.getTailPinNum() >= min && item.getTailPinNum() <= max)
+                .collect(Collectors.toList());
+        return filterList;
+    }
+
+    /**
      * 查询长尾词产品尾销
      *
      * @param
@@ -97,7 +118,7 @@ public class ProductSearchUtils {
             });
         }
         newFixedThreadPool.shutdown();
-        while(true) {
+        while (true) {
             if (newFixedThreadPool.isTerminated()) {
                 break;
             }
@@ -110,7 +131,7 @@ public class ProductSearchUtils {
         // 只需要首页的产品标题
         List<ProductModel> resultList = ProductSearchUtils.getProductList(key, 1, url, cookie);
         if (resultList != null && !resultList.isEmpty()) {
-            Integer tailPinNum = handleViewSales(resultList.get(resultList.size() -1));
+            Integer tailPinNum = handleViewSales(resultList.get(resultList.size() - 1));
             return tailPinNum;
         }
         return -1;
