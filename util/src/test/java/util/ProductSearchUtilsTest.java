@@ -5,6 +5,7 @@ import com.ncepu.util.EasyExcelUtils.EasyExcelUtils;
 import com.ncepu.util.PrintUtils;
 import com.ncepu.util.taobao.ProductModel;
 import com.ncepu.util.taobao.ProductSearchUtils;
+import com.ncepu.util.taobao.TailPinWordModel;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -20,11 +21,8 @@ import java.util.List;
 public class ProductSearchUtilsTest {
     @Test
     public void testGetProductTailPinList() {
-        List<ProductModel> longTailList = new ArrayList<>();
-        longTailList.add(ProductModel.builder().raw_title("双层玻璃杯").build());
-        longTailList.add(ProductModel.builder().raw_title("冰纹玻璃杯").build());
-        longTailList.add(ProductModel.builder().raw_title("保温杯").build());
-        longTailList.add(ProductModel.builder().raw_title("网红保温杯").build());
+        String filePath = "D:\\杯子-长尾词.xlsx";
+        List<TailPinWordModel> longTailList = EasyExcelUtils.readFile(filePath, TailPinWordModel.class);
         ProductSearchUtils.getProductTailPinList(longTailList);
         PrintUtils.println(longTailList);
     }

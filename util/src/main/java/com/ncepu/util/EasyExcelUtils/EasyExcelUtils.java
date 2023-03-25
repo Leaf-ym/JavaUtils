@@ -2,9 +2,12 @@ package com.ncepu.util.EasyExcelUtils;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
+import com.alibaba.fastjson.JSONObject;
 import com.ncepu.model.TeacherNoSettingExportVo;
 
 import java.util.ArrayList;
@@ -19,6 +22,33 @@ import java.util.Map;
  * @date 2022/10/21 11:59
  */
 public class EasyExcelUtils {
+    /**
+     * 读取Excel表到列表中
+     *
+     * @param filePath
+     *
+     * @param cls
+     *
+     * @author wengym
+     *
+     * @date 2023/3/25 19:11
+     *
+     * @return java.util.List<T>
+     */
+    public static <T> List<T> readFile(String filePath, Class<T> cls) {
+        List<T> list = new ArrayList<>();
+        EasyExcel.read(filePath, cls, new AnalysisEventListener<T>() {
+            @Override
+            public void invoke(T model, AnalysisContext context) {
+                list.add(model);
+            }
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext context) {
+            }
+        }).sheet().doRead();
+        return list;
+    }
+
     /**
      * 基于Map导出数据到指定excel表文件
      * excel表文件的头部在列表的model中
