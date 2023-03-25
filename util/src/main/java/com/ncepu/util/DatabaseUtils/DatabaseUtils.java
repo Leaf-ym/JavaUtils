@@ -610,7 +610,7 @@ public class DatabaseUtils {
 
     /***
      *
-     * 基于model获取普通的更新键值对
+     * 基于model获取普通的更新键值对，用逗号隔开
      *
      * @param model 数据表对应的model，即查询条件
      * @param ignoreUpdateFieldSet 一般会结合isEmptyNotQuery，如果不是非空查询，则如果想忽略某个字段，则可将该字段添加到集合中

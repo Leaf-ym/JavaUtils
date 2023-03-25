@@ -17,7 +17,7 @@ public class AESUtilsTest {
     @Test
     public void batchEncryptTest() throws IOException {
         // 批量加密
-        List<String> list = ArrayUtils.toList("13359588568");
+        List<String> list = ArrayUtils.toList("66704589");
         List<String> originList = new ArrayList<>();
         List<String> encryptList = new ArrayList<>();
         for (String str : list) {

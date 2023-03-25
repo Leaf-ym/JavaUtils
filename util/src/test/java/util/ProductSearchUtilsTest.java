@@ -8,6 +8,7 @@ import com.ncepu.util.taobao.ProductSearchUtils;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,17 @@ import java.util.List;
  * @date 2023/3/21 8:42
  */
 public class ProductSearchUtilsTest {
+    @Test
+    public void testGetProductTailPinList() {
+        List<ProductModel> longTailList = new ArrayList<>();
+        longTailList.add(ProductModel.builder().raw_title("双层玻璃杯").build());
+        longTailList.add(ProductModel.builder().raw_title("冰纹玻璃杯").build());
+        longTailList.add(ProductModel.builder().raw_title("保温杯").build());
+        longTailList.add(ProductModel.builder().raw_title("网红保温杯").build());
+        ProductSearchUtils.getProductTailPinList(longTailList);
+        PrintUtils.println(longTailList);
+    }
+
     @Test
     public void testGetProductTitles() {
         String url = "https://s.taobao.com/search?data-key=s&data-value=44&ajax=true&_ksTS=1679378121470_971&callback=jsonp972&q=杯子&imgfile=&js=1&stats_click=search_radio_all:1&initiative_id=staobaoz_20230321&ie=utf8&sort=sale-desc&bcoffset=0&p4ppushleft=,44&s=0&ntoffset=18&style=grid";

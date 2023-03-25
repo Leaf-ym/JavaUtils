@@ -4,8 +4,6 @@ import com.ncepu.util.ExceptionUtils;
 import com.ncepu.util.PrintUtils;
 import org.junit.Test;
 
-import java.io.PrintStream;
-
 /**
  * @author wengym
  * @version 1.0

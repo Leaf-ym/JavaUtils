@@ -44,6 +44,8 @@ public class Md5Utils {
         // e10adc3949ba59abbe56e057f20f883e
         System.out.println("MD5加密：" + Md5Utils.toMD5("123456"));
         System.out.println("MD5加密：" + Md5Utils.toMD5("000000"));
+        System.out.println("MD5加密：" + Md5Utils.toMD5("66704589"));
+        System.out.println("MD5加密：" + Md5Utils.toMD5("Aa123456"));
         // f2394e265bb33d14d6c54682a35e4396
     }
 }

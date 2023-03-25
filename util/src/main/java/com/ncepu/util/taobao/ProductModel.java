@@ -33,4 +33,9 @@ public class ProductModel {
      */
     @ExcelProperty("销量")
     private Integer view_sales_num;
+
+    /**
+     * 尾销
+     */
+    private Integer tail_pin_num;
 }
