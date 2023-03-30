@@ -36,7 +36,7 @@ public class TailPinWordModel {
      * 支付转化率
      */
     @ExcelProperty("支付转化率")
-    private Double paymentConversionRate;
+    private String paymentConversionRate;
     /**
      * 尾销
      */
