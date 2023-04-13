@@ -15,15 +15,59 @@ import java.util.concurrent.*;
 public class ThreadUtils {
 
     /**
-     * 创建线程池
+     * 现在有 T1、T2、T3 三个线程，你怎样保证 T2 在 T1 执行完后执行，T3 在 T2 执行完后执行？
      *
+     * @return void
+     * @author wengym
+     * @date 2023/4/6 9:34
+     */
+    public static void join() {
+        Thread T1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+                    PrintUtils.println("T1");
+                }
+            }
+        });
+        Thread T2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+                    PrintUtils.println("T2");
+                }
+            }
+        });
+        Thread T3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+                    PrintUtils.println("T3");
+                }
+            }
+        });
+        try {
+            T1.start();
+            T1.join();
+            T2.start();
+            T2.join();
+            T3.start();
+            T3.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 创建线程池
+     * <p>
      * 线程拒绝策略
      * 如果线程池中没有空闲的线程了，且任务队列已满
      * CallerRunsPolicy：让调用这个服务的线程来处理这个任务
      * AbortPolicy：不执行新任务，直接抛出异常，提示线程池已满
      * DiscardPolicy：不执行新任务，也不抛出异常
      * DiscardOldestPolicy：丢弃队列最前面的任务，然后重新提交被拒绝的任务。
-     *
+     * <p>
      * 任务阻塞队列，不初始化，默认队列大小为最大值
      *
      * @return java.util.concurrent.ExecutorService

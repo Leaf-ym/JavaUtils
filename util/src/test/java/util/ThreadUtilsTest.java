@@ -18,6 +18,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadUtilsTest {
     @Test
+    public void testJoin() {
+        ThreadUtils.join();
+    }
+
+    @Test
     public void testCreateThreadPool3() {
         // 好像也可以让子线程执行完后，父线程才结束
         Integer taskNum = 100;
