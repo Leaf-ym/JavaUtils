@@ -19,6 +19,12 @@ import java.util.*;
  */
 public class DatabaseUtilsTest {
     @Test
+    public void testAsList() {
+        List<String> list = DatabaseUtils.asList("q1", "q2");
+        PrintUtils.println(list);
+    }
+
+    @Test
     public void testGetFieldValue() {
         String slash = "\\";
         PrintUtils.println(slash);

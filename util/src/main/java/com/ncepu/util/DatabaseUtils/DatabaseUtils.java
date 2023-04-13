@@ -1401,6 +1401,28 @@ public class DatabaseUtils {
     }
 
     /**
+     * 把数组转化为列表
+     *
+     * @param args
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 13:35
+     *
+     * @return java.util.List<T>
+     */
+    public static <T> List<T> asList(T... args) {
+        List<T> result = new ArrayList<>();
+        if (args == null || args.length == 0) {
+            return result;
+        }
+        for (T item : args) {
+            result.add(item);
+        }
+        return result;
+    }
+
+    /**
      * 获取空集合
      *
      * @author wengym
