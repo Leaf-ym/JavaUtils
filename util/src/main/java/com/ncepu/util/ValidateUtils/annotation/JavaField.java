@@ -20,4 +20,8 @@ public @interface JavaField {
      * 规则校验器
      */
     Class validator();
+    /**
+     * 校验器参数，可以是普通字符串，也可以是JSON字符串
+     */
+    String param() default "";
 }

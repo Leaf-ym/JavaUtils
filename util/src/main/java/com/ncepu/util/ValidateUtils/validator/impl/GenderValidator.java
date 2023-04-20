@@ -1,5 +1,6 @@
 package com.ncepu.util.ValidateUtils.validator.impl;
 
+import com.ncepu.util.ValidateUtils.model.ParamModel;
 import com.ncepu.util.ValidateUtils.validator.Validator;
 
 /**
@@ -11,8 +12,8 @@ import com.ncepu.util.ValidateUtils.validator.Validator;
 public class GenderValidator implements Validator {
 
     @Override
-    public Boolean validateField(Object fieldValue) {
-        String gender = (String)fieldValue;
+    public Boolean validateField(ParamModel model) {
+        String gender = (String)model.getFieldValue();
         if ("1".equals(gender) || "2".equals(gender)) {
             return true;
         }

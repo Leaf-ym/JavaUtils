@@ -1,5 +1,6 @@
 package com.ncepu.util.ValidateUtils.validator.impl;
 
+import com.ncepu.util.ValidateUtils.model.ParamModel;
 import com.ncepu.util.ValidateUtils.validator.Validator;
 
 /**
@@ -11,7 +12,8 @@ import com.ncepu.util.ValidateUtils.validator.Validator;
 public class EmptyValidator implements Validator {
 
     @Override
-    public Boolean validateField(Object fieldValue) {
+    public Boolean validateField(ParamModel model) {
+        Object fieldValue = model.getFieldValue();
         if (fieldValue == null || "".equals(fieldValue) || "null".equals(String.valueOf(fieldValue).trim())) {
             return false;
         }

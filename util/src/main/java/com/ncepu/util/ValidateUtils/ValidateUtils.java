@@ -2,6 +2,7 @@ package com.ncepu.util.ValidateUtils;
 
 import com.ncepu.util.ValidateUtils.annotation.JavaField;
 import com.ncepu.util.ValidateUtils.annotation.JavaFields;
+import com.ncepu.util.ValidateUtils.model.ParamModel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -77,12 +78,16 @@ public class ValidateUtils {
             // 校验器的Class
             Class validatorCls = javaField.validator();
             // 检验方法
-            Method validateMethod = validatorCls.getMethod("validateField", Object.class);
+            Method validateMethod = validatorCls.getDeclaredMethod("validateField", ParamModel.class);
             // 调用方法
             field.setAccessible(true);
             Object fieldValue = field.get(model);
             field.setAccessible(false);
-            Object result = validateMethod.invoke(validatorCls.newInstance(), fieldValue);
+            String param = javaField.param().trim();
+            Object result = validateMethod.invoke(validatorCls.newInstance(), ParamModel.builder()
+                    .fieldValue(fieldValue)
+                    .param(param)
+                    .build());
             // 结果处理
             Boolean isPass = (Boolean) result;
             if (!isPass) {

@@ -1,5 +1,8 @@
 package com.ncepu.model;
 
+import com.ncepu.util.ValidateUtils.annotation.JavaField;
+import com.ncepu.util.ValidateUtils.validator.impl.EmptyValidator;
+import com.ncepu.util.ValidateUtils.validator.impl.LengthValidator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +36,9 @@ public class UserBean extends ReqDTO {
     private Double db;
     private double db1;
 
+    @JavaField(message = "长度必须小于5", validator = LengthValidator.class, param = "5")
     private String userName;
+    @JavaField(message = "密码不能为空", validator = EmptyValidator.class)
     private String password;
 
     @Override
