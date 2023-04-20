@@ -17,6 +17,7 @@ import java.util.Date;
 public class DateUtils {
 
     public static final String FORMAT_YYYY = "yyyy";
+    public static final String FORMAT_YYYY_MM = "yyyy-MM";
 
     public static final String FORMAT_MM = "MM";
 
@@ -34,6 +35,68 @@ public class DateUtils {
      * 每个月份的天数
      */
     public static final Integer[] MONTH_MAX_DAY = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    /**
+     * 获取四个数的年份字符串
+     *
+     * @param date
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 16:00
+     *
+     * @return java.lang.String
+     */
+    public static String getYearStr(String date, String format) {
+        String result = formatDate(date, format, DateUtils.FORMAT_YYYY);
+        return result;
+    }
+
+    /**
+     * 获取四个数的年份加两位数的月份字符串
+     *
+     * @param date
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 16:00
+     *
+     * @return java.lang.String
+     */
+    public static String getYearMonthStr(String date, String format) {
+        String result = formatDate(date, format, DateUtils.FORMAT_YYYY_MM);
+        return result;
+    }
+
+    /**
+     * 格式化字符串时间
+     *
+     * @param date 字符串时间
+     *
+     * @param fromFormat date的格式
+     *
+     * @param toFormat 要转化的格式
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 16:04
+     *
+     * @return java.lang.String
+     */
+    public static String formatDate(String date, String fromFormat, String toFormat) {
+        SimpleDateFormat fromSdf = new SimpleDateFormat(fromFormat);
+        SimpleDateFormat toSdf = new SimpleDateFormat(toFormat);
+        try {
+            String result = toSdf.format(fromSdf.parse(date));
+            return result;
+        } catch (ParseException e) {
+        }
+        return "";
+    }
 
     /**
      * 返回指定格式的当前时间
@@ -264,6 +327,26 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
+        date = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        String dateString = sdf.format(date);
+        return dateString;
+    }
+
+    /**
+     * 获取当前时间的num秒后的时间
+     *
+     * @param format
+     * @param num 负数为前，正数往后，0为当前
+     * @return java.lang.String
+     * @author wengym
+     * @date 2023/4/18 16:30
+     */
+    public static String getNowDateAfterNumSecond(String format, int num) {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, num);
         date = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         String dateString = sdf.format(date);
