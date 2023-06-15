@@ -1,5 +1,6 @@
 package com.ncepu.util;
 
+import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,5 +86,30 @@ public class MapUtils {
         public int compare(String key1, String key2) {
             return key1.compareTo(key2);
         }
+    }
+
+    /**
+     * 获取哈希Map底层数组的容量
+     *
+     * @param map
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 14:15
+     *
+     * @return java.lang.Integer
+     */
+    public static <K, V> Integer getMapCapacity(Map<K, V> map) {
+        try {
+            Field table = map.getClass().getDeclaredField("table");
+            table.setAccessible(true);
+            Object[] obj = (Object[])table.get(map);
+            return obj.length;
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author wengym
@@ -17,6 +18,12 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/9/20 14:14
  */
 public class ThreadUtilsTest {
+
+    @Test
+    public void testAtomic() {
+        ThreadUtils.atomic();
+    }
+
     @Test
     public void testJoin() {
         ThreadUtils.join();

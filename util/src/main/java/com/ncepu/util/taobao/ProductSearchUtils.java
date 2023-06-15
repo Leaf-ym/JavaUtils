@@ -329,7 +329,7 @@ public class ProductSearchUtils {
     public static Integer getProductTailPinList(List<TailPinWordModel> list) {
         //Integer THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
         //ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        Integer[] time = {5000, 5000, 5000};
+        Integer[] time = {4000, 4000, 4000};
         Random random = new Random();
         int cnt = 1;
         for (TailPinWordModel model : list) {

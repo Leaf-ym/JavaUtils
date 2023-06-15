@@ -15,6 +15,14 @@ import java.util.Map;
  */
 public class EasyExcelUtilsTest {
     @Test
+    public void testMultipleList() {
+        String templateFilePath = "D:\\template\\easyexcel\\病例样例_v1.xlsx";
+        String outFilePath = "D:\\template\\easyexcel\\病例样例_v1_Out.xlsx";
+        Map<String, Object> dataMap = EasyExcelUtils.getDataMap();
+        EasyExcelUtils.exportFileFromTemplate(dataMap, templateFilePath, outFilePath);
+    }
+
+    @Test
     public void testExportFileFromTemplate() {
         String templateFilePath = "D:\\template\\easyexcel\\productTemplate.xlsx";
         String outFilePath = "D:\\template\\easyexcel\\productOut.xlsx";

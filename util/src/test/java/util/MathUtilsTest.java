@@ -12,12 +12,28 @@ import org.junit.Test;
  */
 public class MathUtilsTest {
     @Test
+    public void testGetGrowthRatioOfPercent() {
+        // 获取百分比形式的增长比：将这个月减去上个月然后除以上个月所得就是增长比，如(100-40)/40=150%
+        double current = 1;
+        double last = 0.0;
+        String percent = MathUtils.getGrowthRatioOfPercent(current, last);
+        PrintUtils.println(percent);
+    }
+
+    @Test
     public void testIntegerCompare() {
-        Integer v1 = 178;
-        Integer v2 = 366;
+        Integer[] arr = {-128, 127, -129, 128};
+        Integer[] arr1 = {-128, 127, -129, 128};
+        PrintUtils.println(arr1[0] == arr[0]);
+        PrintUtils.println(arr1[1] == arr[1]);
+        PrintUtils.println(arr1[2] == arr[2]);
+        PrintUtils.println(arr1[3] == arr[3]);
+        PrintUtils.println(arr1[2].equals(arr[2]));
+        PrintUtils.println(arr1[3].equals(arr[3]));
+        Integer v1 = -128;
+        Integer v2 = 127;
         Integer v3 = 366;
         PrintUtils.println(v1 > v2);
-        PrintUtils.println(v2 == v3);
         PrintUtils.println(v2.equals(v3));
         PrintUtils.println(v1 < v2);
     }

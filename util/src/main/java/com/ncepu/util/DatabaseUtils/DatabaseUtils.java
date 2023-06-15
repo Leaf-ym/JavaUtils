@@ -20,6 +20,13 @@ import java.util.regex.Pattern;
  * @date 2022/3/11 9:18
  */
 public class DatabaseUtils {
+
+    /*==== 通用更新字段 更新时间 ====*/
+    public static final String BASE_UPDATE_CONDITION = "updateDate = now()";
+
+    /*==== 通用更新字段 根据主键id更新 ====*/
+    public static final String BASE_UPDATE_KEY = "id = #{id}";
+
     /**
      * 检查是否存在某数据表
      *
@@ -1420,6 +1427,28 @@ public class DatabaseUtils {
             result.add(item);
         }
         return result;
+    }
+
+    /**
+     * 把字符串分隔成列表
+     *
+     * @param str
+     *
+     * @param separatorChar
+     *
+     * @author wengym
+     *
+     * @date 2023/6/15 14:03
+     *
+     * @return java.util.List<java.lang.String>
+     */
+    public static List<String> split(String str, String separatorChar) {
+        String[] arr = StringUtils.split(str, separatorChar);
+        List<String> list = new ArrayList<>();
+        for (String a : arr) {
+            list.add(a);
+        }
+        return list;
     }
 
     /**

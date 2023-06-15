@@ -568,6 +568,36 @@ public class DateUtils {
     }
 
     /**
+     * 获取指定日期的前几天或后几天的日期（day为负数表示前几天，day为整数表示后几天，day为0表示当天时间）
+     *
+     * @param format
+     *
+     * @param date
+     *
+     * @param day
+     *
+     * @author wengym
+     *
+     * @date 2023/5/16 11:25
+     *
+     * @return java.lang.String
+     */
+    public static String getAfterDayDateStr(String format, String date, int day) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        try {
+            Date hDate = sdf.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(hDate);
+            cal.add(Calendar.DAY_OF_YEAR, day);
+            String str = sdf.format(cal.getTime());
+            return str;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
      * 获取昨天的日期
      *
      * @param format
@@ -606,6 +636,35 @@ public class DateUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 检查指定时间和当前时间
+     * 指定时间 > 当前时间：1， 2099-01-01（指定时间） > 2000-01-01（当前时间）
+     * 指定时间 < 当前时间：-1
+     * 指定时间 = 当前时间：0
+     *
+     * @param date
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/6/5 14:43
+     *
+     * @return int
+     */
+    public static int checkDateWithNow(String date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date theDate = sdf.parse(date, new ParsePosition(0));
+        Date nowDate =  sdf.parse(sdf.format(new Date()), new ParsePosition(0));
+        if (nowDate.before(theDate)) {
+            return 1;
+        }
+        if (nowDate.after(theDate)) {
+            return -1;
+        }
+        return 0;
     }
 
     /**

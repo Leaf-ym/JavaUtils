@@ -17,6 +17,23 @@ import java.util.HashMap;
  */
 public class QrCodeUtilsTest {
     @Test
+    public void testGetImage() {
+        //String url = "http://nursevideo.oss-cn-beijing.aliyuncs.com/meet/ueditor_1686625518860_dtvu891g6se.jpg";
+        String url = "http://nursevideo.oss-cn-beijing.aliyuncs.com/meet/ueditor_1686638066822_tum3je3pe6s.webp";
+        BufferedImage image = (BufferedImage)ImageUtils.getImageFromUrl(url);
+        PrintUtils.println("宽度：" + image.getWidth());
+        PrintUtils.println("高度：" + image.getHeight());
+        PrintUtils.println("高度：" + getWidthScale(image.getWidth()));
+    }
+
+    private static double getWidthScale(int width) {
+        if (width <= 500) {
+            return 1;
+        }
+        return 500.0 / width;
+    }
+
+    @Test
     public void testGetQrCodeOfLogo() {
         String logo = "D:\\测试\\logo\\1.png";
         BufferedImage image = QrCodeUtils.getQrCodeOfLogo("http://www.baidu.com", new HashMap<String, Object>() {{

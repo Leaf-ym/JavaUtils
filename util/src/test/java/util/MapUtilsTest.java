@@ -4,6 +4,7 @@ import com.ncepu.util.MapUtils;
 import com.ncepu.util.PrintUtils;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,6 +14,15 @@ import java.util.Map;
  * @date 2022/9/5 15:05
  */
 public class MapUtilsTest {
+    @Test
+    public void testGetMapCapacity() {
+        // 当HashMap的 大小size 大于 （容量capacity * 负载因子） 就会扩容， 扩容的机制为取一个大于初始容量，是2的幂次的值。负载因为默认为0.75
+        Map<String, Object> map = new HashMap<>(4);
+        for (int i = 1; i <= 20; i++) {
+            map.put(i + "", "a");
+            PrintUtils.println("i = " + i + ", map.size = " + map.size() + ", map.capacity = " + MapUtils.getMapCapacity(map));
+        }
+    }
 
     @Test
     public void testGetGetParams() {

@@ -1,20 +1,36 @@
 let arr = [
     {
-        label: '无',
-        value: '无'
+        label: '小学',
+        value: '1'
     },
     {
-        label: '学士',
-        value: '学士'
+        label: '初中',
+        value: '2'
     },
     {
-        label: '硕士',
-        value: '硕士'
+        label: '高中',
+        value: '3'
     },
     {
-        label: '博士',
-        value: '博士'
-    }
+        label: '中专',
+        value: '4'
+    },
+    {
+        label: '大专',
+        value: '5'
+    },
+    {
+        label: '本科',
+        value: '6'
+    },
+    {
+        label: '硕士研究生',
+        value: '7'
+    },
+    {
+        label: '博士研究生及以上',
+        value: '8'
+    },
 ];
 
 console.log(JSON.stringify(arr));

@@ -19,6 +19,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class StringUtilsTest {
     @Test
+    public void testLevenshtein() {
+        String str1 = "最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen），得到相似度最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）。";
+        String str2 = "最后：先最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）取两长度的最大值maxLen，用1-（需要操axLen），得到相似度。";
+        StringUtils.levenshtein(str1, str2);
+    }
+
+    @Test
     public void testGetChar() {
         String r1 = StringUtils.getChar("33AV12022102511004853064437", 4);
         PrintUtils.println(r1);
@@ -129,8 +136,8 @@ public class StringUtilsTest {
         assertEquals("20000", result2);
         String result3 = StringUtils.formatNum(5, 200000);
         assertEquals("200000", result3);
-        for (int i=9999; i < 190000; i++) {
-            PrintUtils.println(String.format("%05d",i));
+        for (int i = 9999; i < 190000; i++) {
+            PrintUtils.println(String.format("%05d", i));
         }
     }
 

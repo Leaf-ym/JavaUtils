@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class ProductSearchUtilsTest {
             List<TailPinWordModel> filterList = ProductSearchUtils.filterTailPin(longTailList, new HashMap<String, Map<String, Object>>() {{
                 put("tailPinNum", new HashMap<String, Object>() {{
                     put("min", 0);
-                    put("max", 10);
+                    put("max", 15);
                 }});
             }});
             EasyExcelUtils.exportFile(longTailList, tempFilePath);

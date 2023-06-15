@@ -14,6 +14,35 @@ import java.util.Random;
  * @author 123
  */
 public class MathUtils {
+
+    /**
+     * 获取百分比形式的增长比：将这个月减去上个月然后除以上个月所得就是增长比，如(100-40)/40=150%
+     * 如果上期值为0，则直接返回100%。
+     * 一般这种情况下，只考虑增长值，因为前期值为0，考虑增长率无意义。
+     *
+     * @param current 当期值
+     *
+     * @param last 上期值
+     *
+     * @author wengym
+     *
+     * @date 2023/4/13 15:20
+     *
+     * @return java.lang.String
+     */
+    public static String getGrowthRatioOfPercent(double current, double last) {
+        if (last == 0) {
+            return current == 0 ? "0.00%" : "100.00%";
+        }
+        String flag = "";
+        if (current < last) {
+            flag = "-";
+        }
+        double scale = Math.abs(current - last) / last;
+        String percent = flag + MathUtils.toFixed(scale * 100, 2) + "%";
+        return percent;
+    }
+
     public static String getPercentNum(double num, int scale) {
         String r1 = toFixed(num * 100, scale);
         return r1 + "%";

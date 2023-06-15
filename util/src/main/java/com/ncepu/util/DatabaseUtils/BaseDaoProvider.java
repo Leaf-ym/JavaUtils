@@ -55,6 +55,31 @@ public class BaseDaoProvider {
         return sql;
     }
 
+    /**
+     * 通用的批量更新语句构造方法
+     *
+     * @param list
+     *
+     * @param whereFieldSet
+     *
+     * @param cls
+     *
+     * @author wengym
+     *
+     * @date 2023/3/3 13:47
+     *
+     * @return java.lang.String
+     */
+    public <T> String commonBatchUpdate(List<T> list, Set<String> whereFieldSet, Class cls) {
+        String tableName = DatabaseUtils.getTableName(cls);
+        Set<String> ignoreFieldSet = new HashSet<>();
+        ignoreFieldSet.add(DatabaseUtils.getPrimaryKey(cls.getClass()));
+        Map<String, Object> databaseValue = new HashMap<>();
+        databaseValue.put("updateDate", "now()");
+        String sql = DatabaseUtils.batchUpdate(tableName, cls, list, ignoreFieldSet, databaseValue, whereFieldSet, true);
+        return sql;
+    }
+
     /***
      *
      * 通用的更新语句构造方法

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author wengym
@@ -13,6 +14,55 @@ import java.util.concurrent.*;
  * @date 2022/09/20 13:54
  */
 public class ThreadUtils {
+    public static AtomicInteger cnt = new AtomicInteger(0);
+    public static Integer cnt1 = 0;
+
+    /**
+     * 测试多线程中i++的原子性
+     *
+     * @author wengym
+     *
+     * @date 2023/6/9 9:21
+     *
+     * @return void
+     */
+    public static void atomic() {
+        // 测试多线程中i++的原子性
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <=10000; i++) {
+                    cnt.getAndIncrement();
+                    cnt1++;
+                }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <=10000; i++) {
+                    cnt.getAndIncrement();
+                    cnt1++;
+                }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <=10000; i++) {
+                    cnt.getAndIncrement();
+                    cnt1++;
+                }
+            }
+        }).start();
+        try {
+            Thread.sleep(5000);
+            PrintUtils.println(cnt.get());
+            PrintUtils.println(cnt1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 现在有 T1、T2、T3 三个线程，你怎样保证 T2 在 T1 执行完后执行，T3 在 T2 执行完后执行？

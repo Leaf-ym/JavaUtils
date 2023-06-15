@@ -16,6 +16,36 @@ import java.util.regex.Pattern;
  */
 public class DateUtilsTest {
     @Test
+    public void testCheckDateWithNow() {
+        int r1 = DateUtils.checkDateWithNow("2023-06-05 14:39:20", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        int r2 = DateUtils.checkDateWithNow("2024-06-05 14:39:20", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        int r3 = DateUtils.checkDateWithNow("2023-06-05", DateUtils.FORMAT_YYYY_MM_DD);
+        PrintUtils.println(r1);
+        PrintUtils.println(r2);
+        PrintUtils.println(r3);
+    }
+
+    @Test
+    public void testGetAfterDayDateStr() {
+        String r1 = DateUtils.getAfterDayDateStr(DateUtils.FORMAT_YYYY_MM_DD, "2023-05-11", -11);
+        PrintUtils.println(r1);
+    }
+
+    @Test
+    public void testGetNowDateAfterSecondMonth() {
+        String r1 = DateUtils.getNowDateAfterNumSecond(DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, 30);
+        PrintUtils.println(r1);
+    }
+
+    @Test
+    public void testFormatDate() {
+        String r1 = DateUtils.getNowDate(DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        PrintUtils.println(r1);
+        String r2 = DateUtils.formatDate(r1, DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, DateUtils.FORMAT_YYYY);
+        PrintUtils.println(r2);
+    }
+
+    @Test
     public void testGetNowDate() {
         String r1 = DateUtils.getNowDate(DateUtils.FORMAT_YYYYMMDDHHMISS);
         PrintUtils.println(r1);

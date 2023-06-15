@@ -166,4 +166,23 @@ public class EasyExcelUtils {
         map.put("concatPhone", "17325302081");
         return map;
     }
+
+    /**
+     * 获取多列表数据
+     *
+     * @author wengym
+     *
+     * @date 2023/5/31 17:24
+     *
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     */
+    public static Map<String, Object> getMultiListDataMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", getDataList());
+        map.put("userId", "31-003");
+        map.put("userNo", "0001");
+        map.put("userName", "QSY");
+
+        return map;
+    }
 }
