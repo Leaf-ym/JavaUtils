@@ -142,6 +142,20 @@ public class DateUtils {
     }
 
     /**
+     * 返回当前月份
+     *
+     * @author wengym
+     *
+     * @date 2023/7/3 17:27
+     *
+     * @return java.lang.Integer
+     */
+    public static Integer getNowMonth() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    /**
      * 获取季度
      *
      * @param date

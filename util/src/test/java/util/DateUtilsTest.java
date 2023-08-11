@@ -41,7 +41,7 @@ public class DateUtilsTest {
     public void testFormatDate() {
         String r1 = DateUtils.getNowDate(DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
         PrintUtils.println(r1);
-        String r2 = DateUtils.formatDate(r1, DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, DateUtils.FORMAT_YYYY);
+        String r2 = DateUtils.formatDate(r1, DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, DateUtils.FORMAT_YYYYMMDDHHMISS);
         PrintUtils.println(r2);
     }
 
@@ -55,12 +55,10 @@ public class DateUtilsTest {
 
     @Test
     public void getMonth() {
-        Integer r1 = DateUtils.getMonth("2022-12-25 12:05:05", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
+        Integer r1 = DateUtils.getMonth("2022-02-25 12:05:05", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
         PrintUtils.println(r1);
-        int r2 = DateUtils.getQuarter("2022-08-25 12:05:07", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
-        PrintUtils.println(r2);
-        int r3 = DateUtils.getYear("2022-08-25 12:05:07", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
-        PrintUtils.println(r3);
+        int r4 = DateUtils.getNowMonth();
+        PrintUtils.println(r4);
     }
 
     @Test
