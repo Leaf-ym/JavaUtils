@@ -17,8 +17,17 @@ import java.util.Map;
 
 public class AESUtils {
 
+    /**
+     * 字符编码格式
+     */
     private static final String CHAR_UTF_8 = "UTF-8";
+    /**
+     * 密码
+     */
     private static final String KEY = "CsfmEhNRzQRtODHu";
+    /**
+     * 偏移量
+     */
     private static final String IV = "CsfmEhNRzQRtODHu";
 
     /***
@@ -218,7 +227,7 @@ public class AESUtils {
     }
 
     /**
-     * 加密
+     * 加密：AES加密 -> Base64加密 -> 密文
      */
     public static String encrypt(String content) {
         try {
@@ -236,8 +245,10 @@ public class AESUtils {
      */
     public static String encrypt(String content, String key, String iv) {
         try {
+            // AES加密
             byte[] b = encrypt(content.getBytes(CHAR_UTF_8), key.getBytes(CHAR_UTF_8), iv.getBytes(CHAR_UTF_8));
             if (null != b) {
+                // Base64加密
                 return Base64.getUrlEncoder().encodeToString(b);
             }
         } catch (Exception e) {
@@ -250,12 +261,15 @@ public class AESUtils {
      */
     public static byte[] encrypt(byte[] content, byte[] keyBytes, byte[] iv) {
         try {
-            // 根据给定的字节数组和算法构造一个密钥
-            SecretKey deskey = new SecretKeySpec(keyBytes, "AES");
+            // 根据给定的密码字节数组和算法生成密钥
+            SecretKey desKey = new SecretKeySpec(keyBytes, "AES");
             // 加密
             IvParameterSpec ivs = new IvParameterSpec(iv);
+            // 算法/模式/补码方式
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, deskey, ivs);
+            // 选择加密
+            cipher.init(Cipher.ENCRYPT_MODE, desKey, ivs);
+            // 根据待加密内容生成字节数组
             byte[] result = cipher.doFinal(content);
             return result;
         } catch (Exception e) {
@@ -264,10 +278,11 @@ public class AESUtils {
     }
 
     /**
-     * 解密
+     * 解密：Base64解密 -> AES解密 -> 明文
      */
     public static String decrypt(String content) {
         try {
+            // Base64解密，AES解密
             byte[] b = decrypt(Base64.getUrlDecoder().decode(content), KEY.getBytes(CHAR_UTF_8), IV.getBytes(CHAR_UTF_8));
             if (null != b) {
                 return new String(b, CHAR_UTF_8);
@@ -297,11 +312,11 @@ public class AESUtils {
      */
     public static byte[] decrypt(byte[] content, byte[] keyBytes, byte[] iv) {
         try {
-            SecretKey deskey = new SecretKeySpec(keyBytes, "AES");
+            SecretKey desKey = new SecretKeySpec(keyBytes, "AES");
             // 加密
             IvParameterSpec ivs = new IvParameterSpec(iv);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, deskey, ivs);
+            cipher.init(Cipher.DECRYPT_MODE, desKey, ivs);
             byte[] result = cipher.doFinal(content);
             return result;
         } catch (Exception e) {
