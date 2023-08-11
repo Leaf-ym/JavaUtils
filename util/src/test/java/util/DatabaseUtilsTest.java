@@ -19,6 +19,17 @@ import java.util.*;
  */
 public class DatabaseUtilsTest {
     @Test
+    public void testWildcard() {
+        UserRegisterModel model = UserRegisterModel.builder()
+                .userId("17325302081")
+                .password("{\"fillDate\":\"2023-7-5\",\"four\":\"a\",\"one\":\"\\\\n\\ndf\\n\\\\n\\n\\\\n\\\\n\",\"overallMerit\":\"B\",\"specificOpinion\":\"a\",\"contentFamiliarity\":\"B\",\"two\":\"sa\",\"three\":\"a\",\"five\":\"a\",\"fundOpinion\":\"B\",\"indexEvaluation\":\"B\"}")
+                .fillDate("now()")
+                .build();
+        String result1 = DatabaseUtils.commonUpdate(model, DatabaseUtils.asSet(""), "a", true);
+        PrintUtils.println(result1);
+    }
+
+    @Test
     public void testSplit() {
         List<String> list = DatabaseUtils.split("a1,a2,a3", ",");
         PrintUtils.println(list);

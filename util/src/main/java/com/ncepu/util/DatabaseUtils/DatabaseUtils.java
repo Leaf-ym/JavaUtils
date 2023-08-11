@@ -709,15 +709,11 @@ public class DatabaseUtils {
     /**
      * 获取map普通的查询条件，忽略字段集合默认为空，表别名默认为空，默认非空查询
      *
-     * @param cls 数据表对应的model的Class对象
-     *
+     * @param cls      数据表对应的model的Class对象
      * @param queryMap 查询条件
-     *
-     * @author wengym
-     *
-     * @date 2023/1/18 11:13
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2023/1/18 11:13
      */
     public static String commonSearch(Class<?> cls, Map<String, Object> queryMap) {
         String str = commonSearch(cls, queryMap, asSet(""), "", true);
@@ -774,12 +770,9 @@ public class DatabaseUtils {
      * 获取普通的查询条件
      *
      * @param param
-     *
-     * @author wengym
-     *
-     * @date 2022/7/20 10:06
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/7/20 10:06
      */
     public static <T> String commonSearch(SearchModelParam<T> param) {
         if (param.getModel() == null) {
@@ -815,18 +808,12 @@ public class DatabaseUtils {
      * 获取查询model参数
      *
      * @param model
-     *
      * @param whereFieldSet
-     *
      * @param alias
-     *
      * @param isEmptyNotQuery
-     *
-     * @author wengym
-     *
-     * @date 2022/12/19 16:57
-     *
      * @return com.nursehealth.util.common.DatabaseUtils.model.SearchModelParam
+     * @author wengym
+     * @date 2022/12/19 16:57
      */
     public static <T> SearchModelParam getSearchModelParam(T model, Set<String> whereFieldSet, String alias, Boolean isEmptyNotQuery) {
         SearchModelParam<T> searchModelParam = new SearchModelParam<>();
@@ -841,14 +828,10 @@ public class DatabaseUtils {
      * 获取查询model参数，别名默认为空，是否非空查询默认为true
      *
      * @param model
-     *
      * @param whereFieldSet
-     *
-     * @author wengym
-     *
-     * @date 2023/3/20 16:33
-     *
      * @return com.nursehealth.util.common.DatabaseUtils.model.SearchModelParam
+     * @author wengym
+     * @date 2023/3/20 16:33
      */
     public static <T> SearchModelParam getSearchModelParam(T model, Set<String> whereFieldSet) {
         SearchModelParam<T> searchModelParam = new SearchModelParam<>();
@@ -863,12 +846,9 @@ public class DatabaseUtils {
      * 处理并返回处理后的别名
      *
      * @param alias
-     *
-     * @author wengym
-     *
-     * @date 2022/7/22 10:56
-     *
      * @return java.lang.String
+     * @author wengym
+     * @date 2022/7/22 10:56
      */
     public static String getAlias(String alias) {
         if (DatabaseUtils.isNullStr(alias)) {
@@ -921,14 +901,10 @@ public class DatabaseUtils {
      * 获取特定数据类型的值
      *
      * @param value
-     *
      * @param dataType
-     *
-     * @author wengym
-     *
-     * @date 2023/2/27 17:39
-     *
      * @return java.lang.Object
+     * @author wengym
+     * @date 2023/2/27 17:39
      */
     public static Object getValue(String value, String dataType) {
         if (dataType == null || dataType.isEmpty()) {
@@ -1039,14 +1015,14 @@ public class DatabaseUtils {
         }
         final String SINGLE_QUOTATION_MARK = "'";
         if ("java.lang.String".equals(fieldType) || "String".equals(fieldType)) {
-            String str = (String)value;
+            // (String)value，容易出现类型转换异常
+            String str = String.valueOf(value);
+            // 斜杠处理
+            str = handleSlash(str);
+            // 单引号处理（一定要放在斜杠处理之后）
             if (str.contains("'")) {
                 // 单引号，防止SQL注入
                 str = str.replaceAll("'", "\\\\'");
-            }
-            if (getSlashNumOfEnd(str) % 2 != 0 ) {
-                // 结尾反斜杠处理：\
-                str = str + "\\";
             }
             result = SINGLE_QUOTATION_MARK + str + SINGLE_QUOTATION_MARK;
         } else if ("java.util.Date".equals(fieldType) || "Date".equals(fieldType)) {
@@ -1058,22 +1034,40 @@ public class DatabaseUtils {
     }
 
     /**
-     * 获取字符串末尾的反斜杠数量，如：123\\\，反斜杠数量为3
+     * 处理斜杠
      *
      * @param str
      *
      * @author wengym
      *
-     * @date 2023/3/9 11:18
+     * @date 2023/8/11 20:45
      *
+     * @return
+     */
+    public static String handleSlash(String str) {
+        if (isNullStr(str)) {
+            return str;
+        }
+        if (str.contains("\\")) {
+            str = str.replaceAll("\\\\", "\\\\\\\\");
+        }
+        return str;
+    }
+
+    /**
+     * 获取字符串末尾的反斜杠数量，如：123\\\，反斜杠数量为3
+     *
+     * @param str
      * @return java.lang.Integer
+     * @author wengym
+     * @date 2023/3/9 11:18
      */
     public static Integer getSlashNumOfEnd(String str) {
         if (isNullStr(str)) {
             return 0;
         }
         Integer cnt = 0;
-        for (Integer i = str.length() - 1; i >= 0; i-- ) {
+        for (Integer i = str.length() - 1; i >= 0; i--) {
             if (str.charAt(i) == '\\') {
                 ++cnt;
             }
@@ -1411,12 +1405,9 @@ public class DatabaseUtils {
      * 把数组转化为列表
      *
      * @param args
-     *
-     * @author wengym
-     *
-     * @date 2023/4/13 13:35
-     *
      * @return java.util.List<T>
+     * @author wengym
+     * @date 2023/4/13 13:35
      */
     public static <T> List<T> asList(T... args) {
         List<T> result = new ArrayList<>();
@@ -1430,17 +1421,32 @@ public class DatabaseUtils {
     }
 
     /**
+     * 转化成带单引号的字符串列表
+     *
+     * @param list
+     * @return java.util.List<java.lang.String>
+     * @author wengym
+     * @date 2023/7/7 16:30
+     */
+    public static List<String> toSqlList(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<String> resultList = new ArrayList<>();
+        for (String str : list) {
+            resultList.add("'" + str + "'");
+        }
+        return resultList;
+    }
+
+    /**
      * 把字符串分隔成列表
      *
      * @param str
-     *
      * @param separatorChar
-     *
-     * @author wengym
-     *
-     * @date 2023/6/15 14:03
-     *
      * @return java.util.List<java.lang.String>
+     * @author wengym
+     * @date 2023/6/15 14:03
      */
     public static List<String> split(String str, String separatorChar) {
         String[] arr = StringUtils.split(str, separatorChar);
@@ -1452,13 +1458,45 @@ public class DatabaseUtils {
     }
 
     /**
+     * 分隔成带引号的字符串列表
+     *
+     * @param str
+     * @param separatorChar
+     * @return java.util.List<java.lang.String>
+     * @author wengym
+     * @date 2023/7/7 16:35
+     */
+    public static List<String> splitToSqlList(String str, String separatorChar) {
+        List<String> list = DatabaseUtils.split(str, separatorChar);
+        List<String> sqlList = DatabaseUtils.toSqlList(list);
+        return sqlList;
+    }
+
+    /**
+     * 转整数列表
+     *
+     * @param list
+     * @return java.util.List<java.lang.Integer>
+     * @author wengym
+     * @date 2023/7/7 15:40
+     */
+    public static List<Integer> toIntList(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Integer> intList = new ArrayList<>();
+        for (String str : list) {
+            intList.add(Integer.valueOf(str));
+        }
+        return intList;
+    }
+
+    /**
      * 获取空集合
      *
-     * @author wengym
-     *
-     * @date 2022/8/25 9:51
-     *
      * @return java.util.Set<java.lang.String>
+     * @author wengym
+     * @date 2022/8/25 9:51
      */
     public static Set<String> emptySet() {
         return new HashSet<String>();
@@ -1497,12 +1535,9 @@ public class DatabaseUtils {
      * 设置bean中的某个字段的值
      *
      * @param
-     *
-     * @author wengym
-     *
-     * @date 2023/2/27 17:23
-     *
      * @return java.lang.Object
+     * @author wengym
+     * @date 2023/2/27 17:23
      */
     public static <T> void setFieldValue(String fieldName, Object value, T bean) {
         Class cls = bean.getClass();
@@ -1510,7 +1545,7 @@ public class DatabaseUtils {
             Field field = cls.getDeclaredField(fieldName);
             if (value != null) {
                 if (!field.getType().getTypeName().contains("String")) {
-                    value = getValue((String)value, field.getType().getTypeName());
+                    value = getValue((String) value, field.getType().getTypeName());
                 }
             }
             field.setAccessible(true);
