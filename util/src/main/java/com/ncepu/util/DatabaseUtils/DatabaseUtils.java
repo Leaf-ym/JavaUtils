@@ -1017,9 +1017,9 @@ public class DatabaseUtils {
         if ("java.lang.String".equals(fieldType) || "String".equals(fieldType)) {
             // (String)value，容易出现类型转换异常
             String str = String.valueOf(value);
-            // 斜杠处理
-            str = handleSlash(str);
-            // 单引号处理（一定要放在斜杠处理之后）
+            // 反斜杠处理
+            str = handleBackslash(str);
+            // 单引号处理（一定要放在反斜杠处理之后）
             if (str.contains("'")) {
                 // 单引号，防止SQL注入
                 str = str.replaceAll("'", "\\\\'");
@@ -1034,7 +1034,7 @@ public class DatabaseUtils {
     }
 
     /**
-     * 处理斜杠
+     * 处理反斜杠：\
      *
      * @param str
      *
@@ -1044,7 +1044,7 @@ public class DatabaseUtils {
      *
      * @return
      */
-    public static String handleSlash(String str) {
+    public static String handleBackslash(String str) {
         if (isNullStr(str)) {
             return str;
         }
