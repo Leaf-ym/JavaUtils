@@ -19,6 +19,38 @@ import static org.junit.Assert.assertEquals;
  */
 public class StringUtilsTest {
     @Test
+    public void testList() {
+        String s = "{\"fillDate\":\"2023-7-5\",\"four\":\"a\",\"one\":\"\\\\n\\ndf\\n\\\\n\\n\\\\n\\\\n\",\"overallMerit\":\"B\",\"specificOpinion\":\"a\",\"contentFamiliarity\":\"B\",\"two\":\"sa\",\"three\":\"a\",\"five\":\"a\",\"fundOpinion\":\"B\",\"indexEvaluation\":\"B\"}";
+        s = s.replaceAll("\\\\n", "\\\\\\\\n");
+        PrintUtils.println(s);
+    }
+
+    @Test
+    public void testCompareIdCardsIgnoreCase() {
+        Boolean r = StringUtils.compareIdCardsIgnoreCase(null, "");
+        PrintUtils.println(r);
+    }
+
+    @Test
+    public void testGetGroupType() {
+        for (int i = 0; i< 20; i++) {
+            String r = StringUtils.getGroupType();
+            PrintUtils.println(r);
+        }
+    }
+
+    @Test
+    public void testString() {
+        String r1 = "\"\"";
+
+        PrintUtils.println(r1);
+    }
+    @Test
+    public void testGetRandomStr() {
+        String r1 = StringUtils.getRandomStr(8);
+        PrintUtils.println(r1);
+    }
+    @Test
     public void testLevenshtein() {
         String str1 = "最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen），得到相似度最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）。";
         String str2 = "最后：先最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）取两长度的最大值maxLen，用1-（需要操axLen），得到相似度。";

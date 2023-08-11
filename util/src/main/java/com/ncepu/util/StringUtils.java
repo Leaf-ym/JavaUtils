@@ -1,10 +1,8 @@
 package com.ncepu.util;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +28,73 @@ public class StringUtils {
      * 建设银行
      */
     public static final String ENCODING_ISO_8859_1 = "ISO-8859-1";
+
+    /**
+     * 忽略大小写比较两个身份证号
+     *
+     * @param idCard1
+     *
+     * @param idCard2
+     *
+     * @author wengym
+     *
+     * @date 2023/8/8 14:05
+     *
+     * @return java.lang.Boolean
+     */
+    public static Boolean compareIdCardsIgnoreCase(String idCard1, String idCard2) {
+        if (idCard1 == null && idCard2 == null) {
+            return true;
+        }
+        if (idCard1 == null || idCard2 == null) {
+            return false;
+        }
+        if (idCard1.toUpperCase().equals(idCard2.toUpperCase())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取指定长度的大小写字母和数字的随机字符串
+     *
+     * @param length
+     *
+     * @author wengym
+     *
+     * @date 2023/7/12 10:05
+     *
+     * @return java.lang.String
+     */
+    public static String getRandomStr(int length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("参数不能小于等于0");
+        }
+        // 10个数字和26个大小写字母的组成
+        String SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random RANDOM = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(SYMBOLS.charAt(RANDOM.nextInt(SYMBOLS.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取随机分组：A和B
+     *
+     * @author wengym
+     *
+     * @date 2023/7/26 15:25
+     *
+     * @return java.lang.String
+     */
+    public static String getGroupType() {
+        String str = "AB";
+        Random random = new Random();
+        Integer r = random.nextInt(100) % 2;
+        return String.valueOf(str.charAt(r));
+    }
 
     /**
      * 获取字符串特定索引处的字符
