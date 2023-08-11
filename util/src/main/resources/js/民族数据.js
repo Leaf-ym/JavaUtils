@@ -222,6 +222,10 @@ let arr = [
     {
         value: '56',
         label: '基诺族'
+    },
+    {
+        value: '57',
+        label: '穿青人'
     }
 ];
 
