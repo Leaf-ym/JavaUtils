@@ -14,10 +14,7 @@ import com.ncepu.util.EasyExcelUtils.strategy.CustomCellWriteWidthConfig;
 import com.ncepu.util.EasyExcelUtils.strategy.StrategyUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wengym
@@ -27,7 +24,7 @@ import java.util.Map;
  */
 public class EasyExcelUtils {
     /**
-     * 读取Excel表到列表中
+     * 读取Excel表到model列表中
      *
      * @param filePath
      * @param cls
@@ -48,6 +45,40 @@ public class EasyExcelUtils {
             }
         }).sheet().doRead();
         return list;
+    }
+
+    /**
+     * 读取Excel表到map列表中
+     *
+     * @param filePath
+     *
+     * @author wengym
+     *
+     * @date 2023/9/1 15:51
+     *
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     */
+    public static JSONObject readFile(String filePath) {
+        JSONObject result = new JSONObject();
+        List<Map<Integer, Object>> list = new ArrayList<>();
+        EasyExcel.read(filePath, new AnalysisEventListener<Map<Integer, Object>>() {
+            @Override
+            public void invoke(Map<Integer, Object> map, AnalysisContext context) {
+                // map是有序的LinkedHashMap
+                list.add(map);
+            }
+
+            @Override
+            public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
+                result.put("head", headMap);
+            }
+
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext context) {
+            }
+        }).sheet().doRead();
+        result.put("data", list);
+        return result;
     }
 
     /**
