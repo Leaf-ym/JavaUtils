@@ -6,9 +6,7 @@ import com.ncepu.util.DatabaseUtils.model.SearchModelParam;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -1554,5 +1552,35 @@ public class DatabaseUtils {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取某一个类的父类中的第i个类型参数的Class对象
+     * 如类B的父类A有模型参数T和F，则
+     * getActualTypeArgument(Class<A> clazz, 0)就是T的Class对象
+     * getActualTypeArgument(Class<A> clazz, 1)就是F的Class对象
+     *
+     * @param clazz
+     *
+     * @param i
+     *
+     * @author wengym
+     *
+     * @date 2023/8/26 9:20
+     *
+     * @return java.lang.Class<?>
+     */
+    public static <T> Class<T> getActualTypeArgument(Class<?> clazz, Integer i) {
+        Class<T> entityClass = null;
+        // 泛型超类
+        Type genericSuperclass = clazz.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass)
+                    .getActualTypeArguments();
+            if (actualTypeArguments != null && actualTypeArguments.length > 0) {
+                entityClass = (Class<T>) actualTypeArguments[i];
+            }
+        }
+        return entityClass;
     }
 }

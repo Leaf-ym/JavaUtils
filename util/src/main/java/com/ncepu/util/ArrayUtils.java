@@ -195,12 +195,11 @@ public class ArrayUtils {
             @Override
             public int compare(JSONObject o1, JSONObject o2) {
                 // 倒叙：3，2，2，1
-                boolean flag = o1.getInteger("value") > o2.getInteger("value");
                 if (o1.getInteger("value") > o2.getInteger("value")) {
                     return -1;
                 } else if (o1.getInteger("value") < o2.getInteger("value")){
                     return 1;
-                } else if (o1.getInteger("value") == o2.getInteger("value")) {
+                } else if (o1.getInteger("value").equals(o2.getInteger("value"))) {
                     return 0; // 要有相等的判断，否则可能会抛异常：java.lang.IllegalArgumentException: Comparison method violates its general contract!
                 }
                 return 0;

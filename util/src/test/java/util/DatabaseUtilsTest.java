@@ -1,7 +1,6 @@
 package util;
 
-import com.ncepu.model.NewUserBean;
-import com.ncepu.model.UserRegisterModel;
+import com.ncepu.model.*;
 import com.ncepu.util.BeanUtils;
 import com.ncepu.util.DatabaseUtils.DatabaseUtils;
 import com.ncepu.util.DatabaseUtils.model.SearchModelParam;
@@ -18,6 +17,17 @@ import java.util.*;
  * @date 2022/4/21 10:00
  */
 public class DatabaseUtilsTest {
+    @Test
+    public void testGetActualTypeArgument() {
+        UserDemo<UserBean, UserDTO> ud = new UserDemo();
+        ud.setT(new UserBean());
+        ud.setF(new UserDTO());
+        Class<UserBean> c1 = DatabaseUtils.getActualTypeArgument(ud.getClass(), 0);
+        Class<UserDTO> c2 = DatabaseUtils.getActualTypeArgument(ud.getClass(), 1);
+        PrintUtils.println(c1.toString());
+        PrintUtils.println(c2.toString());
+    }
+
     @Test
     public void testWildcard() {
         UserRegisterModel model = UserRegisterModel.builder()
