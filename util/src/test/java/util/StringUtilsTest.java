@@ -52,9 +52,13 @@ public class StringUtilsTest {
     }
     @Test
     public void testLevenshtein() {
+        long startTime = System.currentTimeMillis();
         String str1 = "最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen），得到相似度最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）。";
         String str2 = "最后：先最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）最后：先取两个字符串长度的最大值maxLen，用1-（需要操作数除maxLen）取两长度的最大值maxLen，用1-（需要操axLen），得到相似度。";
         StringUtils.levenshtein(str1, str2);
+        long endTime = System.currentTimeMillis();
+        System.out.println("运行时间：" + (float) (endTime - startTime) / 1000 + "s");
+
     }
 
     @Test
