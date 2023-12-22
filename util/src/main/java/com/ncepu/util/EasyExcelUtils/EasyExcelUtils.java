@@ -9,11 +9,8 @@ import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.alibaba.fastjson.JSONObject;
 import com.ncepu.model.TeacherNoSettingExportVo;
-import com.ncepu.util.EasyExcelUtils.strategy.CustomCellWriteHeightConfig;
 import com.ncepu.util.EasyExcelUtils.strategy.CustomCellWriteWidthConfig;
-import com.ncepu.util.EasyExcelUtils.strategy.StrategyUtils;
-
-import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -126,6 +123,20 @@ public class EasyExcelUtils {
     }
 
     /**
+     * 基于Map导出数据到指定excel表文件
+     * excel表文件的头部在列表的model中
+     *
+     * @param dataList    数据列表
+     * @param outputStream 输出流
+     * @return void
+     * @author wengym
+     * @date 2023/11/3 9:14
+     */
+    public static <T> void exportFile(List<List<String>> dataList, List<List<String>> headList, OutputStream outputStream) {
+        EasyExcel.write(outputStream).head(headList).sheet(0).doWrite(dataList);
+    }
+
+    /**
      * 基于model导出数据到指定excel表文件
      * excel表文件的头部在列表的model中
      *
@@ -136,7 +147,11 @@ public class EasyExcelUtils {
      * @date 2022/10/25 9:14
      */
     public static <T> void exportFile(List<T> dataList, String outFilePath) {
-        EasyExcel.write(outFilePath, dataList.get(0).getClass()).sheet(0).doWrite(dataList);
+        EasyExcel.write(outFilePath, dataList.get(0).getClass())
+                .sheet(0)
+                .registerWriteHandler(new CustomCellWriteWidthConfig())
+                //.registerWriteHandler(new CustomCellWriteHeightConfig())
+                .doWrite(dataList);
     }
 
     /**
