@@ -1,5 +1,7 @@
 package com.ncepu.util;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,6 +42,24 @@ public class Md5Utils {
         return md5code.toString();
     }
 
+    /**
+     * 更安全的一种md5算法
+     *
+     * @param plainText
+     *
+     * @param salt
+     *
+     * @author wengym
+     *
+     * @date 2023/12/18 16:42
+     *
+     * @return java.lang.String
+     */
+    public static String toNewMd5(String plainText, String salt) {
+        String password = new SimpleHash("MD5", plainText, salt, 1024).toHex();
+        return password;
+    }
+
     public static void main(String[] args) {
         // e10adc3949ba59abbe56e057f20f883e
         System.out.println("MD5加密：" + Md5Utils.toMD5("123456"));
@@ -47,5 +67,8 @@ public class Md5Utils {
         System.out.println("MD5加密：" + Md5Utils.toMD5("66704589"));
         // afdd0b4ad2ec172c586e2150770fbf9e
         System.out.println("MD5加密：" + Md5Utils.toMD5("Aa123456"));
+        System.out.println("MD5加密：" + Md5Utils.toMD5("Zz123456"));
+
+        System.out.println("新MD5加密：" + Md5Utils.toNewMd5("Aa123456", "zklcRY"));
     }
 }

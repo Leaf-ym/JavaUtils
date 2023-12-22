@@ -64,7 +64,12 @@ public class MapUtils {
         if (paramMap == null || paramMap.size() < 1) {
             return paramMap;
         }
-        Map<String, Object> treeMap = new TreeMap<>(new MyKeyComparator());
+        Map<String, Object> treeMap = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String key1, String key2) {
+                return key1.compareTo(key2);
+            }
+        });
         for (String key : paramMap.keySet()) {
             treeMap.put(key, paramMap.get(key));
         }

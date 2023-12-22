@@ -19,7 +19,7 @@ public class CommonTableFormRelationServiceImpl extends DatabaseBaseServiceImpl<
     private CommonTableFormRelationDAO commonTableFormRelationDAO;
 
     //@Resource
-    public void setDAO(CommonTableFormRelationDAO dao) {
+    public void setNurseSchedulingRuleClientDAO(CommonTableFormRelationDAO dao) {
         // 必须要有这一步
         this.commonTableFormRelationDAO = dao;
         super.databaseBaseDAO = dao;

@@ -2,6 +2,7 @@ package util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ncepu.util.*;
+import com.ncepu.util.DatabaseUtils.DatabaseUtils;
 import com.ncepu.util.EasyExcelUtils.EasyExcelUtils;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class AESUtilsTest {
     @Test
     public void batchEncryptTest() {
         // 批量加密
-        List<String> list = ArrayUtils.toList("13570375286", "142402198908236624");
+        List<String> list = ArrayUtils.toList("18089262910", "110221198312205027");
         List<String> originList = new ArrayList<>();
         List<String> encryptList = new ArrayList<>();
         for (String str : list) {
@@ -34,7 +35,7 @@ public class AESUtilsTest {
     @Test
     public void decryptTest() {
         // 批量解密
-        List<String> list = ArrayUtils.toList("TmdNnxFd4byYteopxTVjHw==", "QLQab30mvPdMfa1TquVU96Oy_gOx2G95JMqg1CpnY5I=", "Sxg__6lMESCa_JhiP4vEJQ==");
+        List<String> list = ArrayUtils.toList("GIVhrugwNuqPRhB-JiJ5WQ==", "Ajxnb8a1_aWcxtdCSavccIGxbxIQeZUI0epTiZQB0fE=", "JiEjsc0t5d4eIgTQ4bZOYvIqeiuDg-3rT0MJI5r6EjE=");
         List<String> originList = new ArrayList<>();
         List<String> decryptList = new ArrayList<>();
         for (String str : list) {
@@ -56,13 +57,14 @@ public class AESUtilsTest {
      */
     @Test
     public void batchDecryptExcelFile() {
-        String path = "C:\\Users\\Administrator\\Desktop\\cna_member_exposed_temp.xlsx";
-        String outPath = "C:\\Users\\Administrator\\Desktop\\cna_member_exposed_temp1.xlsx";
+        String path = "C:\\Users\\Administrator\\Desktop\\北京中西医图像数据处理.xlsx";
+        String outPath = "C:\\Users\\Administrator\\Desktop\\北京中西医图像数据处理1.xlsx";
         JSONObject result = EasyExcelUtils.readFile(path);
         // 数据列表
         List<List<String>> dataList = new ArrayList<>();
         List<Map<Integer, Object>> list = (List<Map<Integer, Object>>)result.get("data");
-        for (Map<Integer, Object> map : list) {
+        for (int j = 0; j < list.size(); j++) {
+            Map<Integer, Object> map = list.get(j);
             List<String> data = new ArrayList<>();
             for (Integer i : map.keySet()) {
                 if (map.get(i) == null) {
@@ -80,6 +82,54 @@ public class AESUtilsTest {
             headList.add(new ArrayList<String>() {{
                 add(head.get(i) + "");
             }});
+        }
+        // 导出
+        EasyExcelUtils.exportFile(dataList, headList, outPath);
+    }
+
+    /**
+     * 批量加密Excel文件
+     *
+     * @author wengym
+     *
+     * @date 2023/10/20 9:12
+     *
+     * @return void
+     */
+    @Test
+    public void batchEncryptExcelFile() {
+        String path = "C:\\Users\\Administrator\\Desktop\\导出通过学会审核的工作委员会数据.xlsx";
+        String outPath = "C:\\Users\\Administrator\\Desktop\\导出通过学会审核的工作委员会数据1.xlsx";
+        JSONObject result = EasyExcelUtils.readFile(path);
+        //
+        List<String> encrypt = DatabaseUtils.asList("身份证号", "小写身份证号", "手机号");
+        // 头列表
+        List<List<String>> headList = new ArrayList<>();
+        Map<Integer, String> head = (Map<Integer, String>)result.get("head");
+        for (Integer i : head.keySet()) {
+            headList.add(new ArrayList<String>() {{
+                add(head.get(i) + "");
+            }});
+        }
+        // 数据列表
+        List<List<String>> dataList = new ArrayList<>();
+        List<Map<Integer, Object>> list = (List<Map<Integer, Object>>)result.get("data");
+        for (int j = 0; j < list.size(); j++) {
+            Map<Integer, Object> map = list.get(j);
+            List<String> data = new ArrayList<>();
+            for (Integer i : map.keySet()) {
+                if (map.get(i) == null) {
+                    data.add("");
+                    continue;
+                }
+                if (encrypt.contains(headList.get(i).get(0))) {
+                    // 在加密列表中则加密
+                    data.add(AESUtils.encrypt(map.get(i) + ""));
+                } else {
+                    data.add(map.get(i) + "");
+                }
+            }
+            dataList.add(data);
         }
         // 导出
         EasyExcelUtils.exportFile(dataList, headList, outPath);
