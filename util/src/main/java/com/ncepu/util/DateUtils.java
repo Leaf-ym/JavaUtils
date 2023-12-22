@@ -5,8 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * 时间日期工具类
@@ -582,7 +581,7 @@ public class DateUtils {
     }
 
     /**
-     * 获取指定日期的前几天或后几天的日期（day为负数表示前几天，day为整数表示后几天，day为0表示当天时间）
+     * 获取指定日期的前几天或后几天的日期（day为负数表示前几天，day为正数表示后几天，day为0表示当天时间）
      *
      * @param format
      *
@@ -679,6 +678,70 @@ public class DateUtils {
             return -1;
         }
         return 0;
+    }
+
+    /**
+     * 获取时间范围日期集合，包括开始时间和结束时间
+     * 如startDate = 2023-10-27，endDate = 2023-10-29
+     * 则返回集合：2023-10-27，2023-10-28，2023-10-29
+     *
+     * @param startDate
+     *
+     * @param endDate
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/10/27 15:17
+     *
+     * @return java.util.Set<java.lang.String>
+     */
+    public static Set<String> getDateRange(String startDate, String endDate, String format) {
+        Set<String> set = new HashSet<>();
+        String start = formatDate(startDate, format, DateUtils.FORMAT_YYYY_MM_DD);
+        String end = formatDate(endDate, format, DateUtils.FORMAT_YYYY_MM_DD);
+        if (compareTwoDateTime(start, end, DateUtils.FORMAT_YYYY_MM_DD) > 0) {
+            throw new IllegalArgumentException("startDate不能大于endDate！");
+        }
+        set.add(start);
+        if (start.equals(end)) {
+            return set;
+        }
+        int i = 1;
+        while (true) {
+            String date = getAfterDayDateStr(format, start, i++);
+            set.add(date);
+            if (date.equals(end)) {
+                break;
+            }
+        }
+        return set;
+    }
+
+    /**
+     * 获取时间范围天数，包括开始时间和结束时间
+     * 如startDate = 2023-10-27，endDate = 2023-10-29
+     * 则返回集3
+     *
+     * @param startDate
+     *
+     * @param endDate
+     *
+     * @param format
+     *
+     * @author wengym
+     *
+     * @date 2023/10/31 15:17
+     *
+     * @return java.util.Set<java.lang.Integer>
+     */
+    public static Integer getDateRangeDayNum(String startDate, String endDate, String format) {
+        Set<String> set = getDateRange(startDate, endDate, format);
+        if (set == null) {
+            return 0;
+        }
+        return set.size();
     }
 
     /**

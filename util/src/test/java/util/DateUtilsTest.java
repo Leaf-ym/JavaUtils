@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -15,6 +16,19 @@ import java.util.regex.Pattern;
  * @date 2022/6/15 13:36
  */
 public class DateUtilsTest {
+    @Test
+    public void testGetDateRange() {
+        Set<String> s1 = DateUtils.getDateRange("2023-10-27", "2023-10-27", DateUtils.FORMAT_YYYY_MM_DD);
+        PrintUtils.println(s1);
+    }
+
+    @Test
+    public void testDateDiff() {
+        long second = DateUtils.getDiffSecondOfDateTime("2023-10-08", "2023-10-09", DateUtils.FORMAT_YYYY_MM_DD);
+        PrintUtils.println(second / 60);
+        PrintUtils.println(second / 60 / 60);
+    }
+
     @Test
     public void testCheckDateWithNow() {
         int r1 = DateUtils.checkDateWithNow("2023-06-05 14:39:20", DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS);
