@@ -14,6 +14,56 @@ import java.util.Random;
  * @author 123
  */
 public class MathUtils {
+    /**
+     * 向下取整数
+     * 如1.4，0.5的结果为：1，0
+     *
+     * @param num
+     *
+     * @author wengym
+     *
+     * @date 2023/12/22 15:15
+     *
+     * @return java.lang.String
+     */
+    public static Integer getFloorInt(Double num) {
+        Integer result = (int)Math.floor(num);
+        return result;
+    }
+
+    /**
+     * 向上取整数
+     * 如1.4，0.5的结果为：2，1
+     *
+     * @param num
+     *
+     * @author wengym
+     *
+     * @date 2023/12/22 15:15
+     *
+     * @return java.lang.String
+     */
+    public static Integer getCeilInt(Double num) {
+        Integer result = (int)Math.ceil(num);
+        return result;
+    }
+
+    /**
+     * 四舍五入取整数
+     * 如1.4，0.5的结果为：1，1
+     *
+     * @param num
+     *
+     * @author wengym
+     *
+     * @date 2023/12/22 15:15
+     *
+     * @return java.lang.String
+     */
+    public static Integer getRoundInt(Double num) {
+        Integer result = (int)Math.round(num);
+        return result;
+    }
 
     /**
      * 获取百分比形式的增长比：将这个月减去上个月然后除以上个月所得就是增长比，如(100-40)/40=150%
@@ -43,11 +93,35 @@ public class MathUtils {
         return percent;
     }
 
+    /**
+     * 转为指定小数位数的百分数
+     *
+     * @param num 要转百分数的参数
+     *
+     * @param scale 保留的小数位数
+     *
+     * @author wengym
+     *
+     * @date 2023/12/22 15:12
+     *
+     * @return java.lang.String
+     */
     public static String getPercentNum(double num, int scale) {
         String r1 = toFixed(num * 100, scale);
         return r1 + "%";
     }
 
+    /**
+     * 字符串数字转整数
+     *
+     * @param numStr
+     *
+     * @author wengym
+     *
+     * @date 2023/12/22 15:12
+     *
+     * @return java.lang.Integer
+     */
     public static Integer toInteger(String numStr) {
         Integer num = Integer.valueOf(numStr);
         return num;
