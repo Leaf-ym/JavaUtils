@@ -1,15 +1,13 @@
 package util;
 
-import com.ncepu.util.CollectionUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.ncepu.util.EasyExcelUtils.EasyExcelUtils;
 import com.ncepu.util.FileUtils;
 import com.ncepu.util.PrintUtils;
-import com.ncepu.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,6 +17,24 @@ import java.util.*;
  * @date 2022/8/2 9:12
  */
 public class FileUtilsTest {
+
+    @Test
+    public void handleNetworkFile() {
+        //String path = "C:\\Users\\Administrator\\Desktop\\导出通过学会审核的工作委员会数据1.xlsx";
+        String path = "C:\\Users\\Administrator\\Desktop\\北京中西医图像数据处理1.xlsx";
+        JSONObject result = EasyExcelUtils.readFile(path);
+        List<Map<Integer, Object>> list = (List<Map<Integer, Object>>)result.get("data");
+        for (Map<Integer, Object> map : list) {
+            String userName = map.get(1) + "";
+            String cellPhone = map.get(3) + "";
+            String workUnit = map.get(2) + "";
+            String url = map.get(4) + "";
+            String suffix = FileUtils.getFileSuffix(url);
+            String outPath = "C:\\Users\\Administrator\\Desktop\\北京中西医专科护士头像\\" + userName + "-" + cellPhone + "-" + workUnit + "." + suffix;
+            FileUtils.downloadNetworkFile(url, outPath);
+        }
+        PrintUtils.println(result);
+    }
 
     @Test
     public void getStrSetTest() {

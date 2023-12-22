@@ -335,15 +335,32 @@ public class FileUtils {
     /**
      * 下载远程的网络文件
      * 不要把输入流中的内容一次性读入缓存，否则会因为输入流内容过多导致内容溢出问题
+     * 在 Java 中，使用 file.createNewFile() 方法创建文件时，如果指定的目录不存在，它不会自动创建目录。createNewFile() 方法只会创建文件本身，而不会创建父目录。
+     * 如果希望在创建文件时同时创建目录，可以使用 file.mkdirs() 方法。mkdirs() 方法将创建所有不存在的目录，包括父目录和子目录。
      *
-     * @param url
-     * @param savePath
+     * @param url 文件的网络URL
+     * @param savePath 具体的文件路径，如C:\Users\Administrator\Desktop\专业委员会\1.txt
      * @return void
      * @author wengym
      * @date 2022/8/3 10:38
      */
     public static void downloadNetworkFile(String url, String savePath) {
         savePath = FileUtils.urlDecode(savePath);
+        File file = new File(savePath);
+        File parentDir = file.getParentFile();
+        if (!parentDir.exists()) {
+            // 创建目录
+            parentDir.mkdirs();
+        }
+        if (!file.exists()) {
+            try {
+                // 创建文件
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
         InputStream in = null;
         FileOutputStream out = null;
         try {
