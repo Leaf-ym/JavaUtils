@@ -12,6 +12,24 @@ import org.junit.Test;
  */
 public class MathUtilsTest {
     @Test
+    public void testGetRoundInt() {
+        double current = 1.4;
+        double last = 0.5;
+        Integer r1 = MathUtils.getRoundInt(current);
+        Integer r2 = MathUtils.getRoundInt(last);
+        Integer r3 = MathUtils.getFloorInt(current);
+        Integer r4 = MathUtils.getFloorInt(last);
+        Integer r5 = MathUtils.getCeilInt(current);
+        Integer r6 = MathUtils.getCeilInt(last);
+        PrintUtils.println(r1);
+        PrintUtils.println(r2);
+        PrintUtils.println(r3);
+        PrintUtils.println(r4);
+        PrintUtils.println(r5);
+        PrintUtils.println(r6);
+    }
+
+    @Test
     public void testGetGrowthRatioOfPercent() {
         // 获取百分比形式的增长比：将这个月减去上个月然后除以上个月所得就是增长比，如(100-40)/40=150%
         double current = 1;
