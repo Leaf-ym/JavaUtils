@@ -21,6 +21,11 @@ import static org.junit.Assert.assertEquals;
  * @date 2022/4/29 9:29
  */
 public class StringUtilsTest {
+    @Test
+    public void handleSubString() {
+        String str = "http://nursevideo.oss-cn-beijing.aliyuncs.com/meet/6215d41f928c44a39f98ba60283ec58d.zip?uploadId=BB6E2F3976F3451B979716E37E889C99";
+        PrintUtils.println(str.replaceAll("\\?.*", ""));
+    }
 
     @Test
     public void testDocNo() {
