@@ -21,7 +21,7 @@ public class AESUtilsTest {
     @Test
     public void batchEncryptTest() {
         // 批量加密
-        List<String> list = ArrayUtils.toList("18089262910", "110221198312205027");
+        List<String> list = ArrayUtils.toList("13877863800", "15810728199", "13269778797");
         List<String> originList = new ArrayList<>();
         List<String> encryptList = new ArrayList<>();
         for (String str : list) {
@@ -35,7 +35,7 @@ public class AESUtilsTest {
     @Test
     public void decryptTest() {
         // 批量解密
-        List<String> list = ArrayUtils.toList("GIVhrugwNuqPRhB-JiJ5WQ==", "Ajxnb8a1_aWcxtdCSavccIGxbxIQeZUI0epTiZQB0fE=", "JiEjsc0t5d4eIgTQ4bZOYvIqeiuDg-3rT0MJI5r6EjE=");
+        List<String> list = ArrayUtils.toList("RPXEgg6QcPP7gFux-0rXVvWYlfj5b6nmPxAnMVBCyQI=", "Ajxnb8a1_aWcxtdCSavccIGxbxIQeZUI0epTiZQB0fE=", "JiEjsc0t5d4eIgTQ4bZOYvIqeiuDg-3rT0MJI5r6EjE=");
         List<String> originList = new ArrayList<>();
         List<String> decryptList = new ArrayList<>();
         for (String str : list) {
