@@ -2,19 +2,19 @@ package util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ncepu.model.CnaMemberModel;
-import com.ncepu.model.TeacherNoSettingExportVo;
-import com.ncepu.model.UserInfoDTO;
-import com.ncepu.model.UserInfoModel;
-import com.ncepu.util.BeanUtils;
-import com.ncepu.util.CommonUtil;
+import com.ncepu.model.*;
+import com.ncepu.util.*;
 import com.ncepu.util.DatabaseUtils.DatabaseUtils;
 import com.ncepu.util.EasyExcelUtils.EasyExcelUtils;
-import com.ncepu.util.PrintUtils;
+import com.ncepu.util.ImageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +24,725 @@ import java.util.stream.Collectors;
  * @date 2022/10/21 14:03
  */
 public class EasyExcelUtilsTest {
+
+    /**
+     * 视频：videoUrl，辅助材料地址：otherStuffUrl，发明照片：innovatePhoto，护士执业证图片：nurseNumberPhoto，证件照：userPicUrl
+     *
+     * @return void
+     * @author wengym
+     * @date 2024/1/15 14:36
+     */
+    @Test
+    public void handleContributePapers() throws Exception {
+        String path = "C:\\Users\\Administrator\\Desktop\\contribute_papers.xlsx";
+        JSONObject jsonObject = EasyExcelUtils.readFile(path);
+        JSONArray data = jsonObject.getJSONArray("data");
+        ExecutorService threadPool = ThreadUtils.createThreadPool();
+        for (Object m : data) {
+            threadPool.execute(() -> {
+                LinkedHashMap<Integer, String> single = (LinkedHashMap) m;
+                String paperTitle = single.get(8);
+                paperTitle = paperTitle.replace("/", "-");
+                paperTitle = paperTitle.replace("+", "-");
+                paperTitle = paperTitle.replace(" ", "");
+                String author = single.get(4);
+                String gender = "1".equals(single.get(23)) ? "男" : "女";
+                String authorCell = single.get(21);
+                String year = DateUtils.formatDate(single.get(16), DateUtils.FORMAT_YYYY_MM_DD_HH_MI_SS, "YYYY");
+                // 附件
+                String fileKey = single.get(11);
+                // 视频
+                String videoUrl = single.get(19);
+                // 辅助材料
+                JSONArray otherStuffUrl = JSONArray.parseArray(single.get(55));
+                // 用户头像
+                String userPicUrl = single.get(50);
+                // 省份推荐意见附件
+                String provinceOpinionFileUrl = single.get(60);
+                // 身份证图片正面
+                String idCardImgFront = single.get(63);
+                // 身份证图片反面
+                String idCardImgBack = single.get(64);
+                // 护士证
+                JSONArray nurseCertificate = JSONArray.parseArray(single.get(65));
+                // 盖章的省市推荐意见文件
+                String recommendationFileUrl = single.get(67);
+
+                PrintUtils.println(paperTitle + "-" + author + "-" + gender + "-" + authorCell + "-" + year);
+                String baseName = "-" + author + "-" + paperTitle;
+
+                String baseDir = "C:\\Users\\Administrator\\Desktop\\杰出护理\\" + year + "\\" + author + "-" + authorCell + "-" + gender + "-" + paperTitle + "";
+                if (FileUtils.isExist(baseDir + "【完毕】")) {
+                    return;
+                }
+                FileUtils.deleteFiles(baseDir);
+                try {
+                    if (!CommonUtil.isNullStr(fileKey)) {
+                        String suffix = FileUtils.getFileSuffix(fileKey);
+                        String outPath = baseDir + "\\附件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(fileKey, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(videoUrl)) {
+                        String name = "视频";
+                        String url = videoUrl;
+                        String suffix = FileUtils.getFileSuffix(url);
+                        String safeVidelUrl = PlayUtil.getSafeUrl(url, 120, "");
+                        String dir = baseDir + "\\视频\\";
+                        String outPath = dir + name + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(safeVidelUrl, outPath);
+                    }
+                    if (otherStuffUrl != null && !otherStuffUrl.isEmpty()) {
+                        for (Object o : otherStuffUrl) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\辅助材料\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(userPicUrl)) {
+                        String suffix = FileUtils.getFileSuffix(userPicUrl);
+                        String outPath = baseDir + "\\用户头像" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(userPicUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(provinceOpinionFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(provinceOpinionFileUrl);
+                        String outPath = baseDir + "\\省份推荐意见附件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(provinceOpinionFileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(idCardImgFront)) {
+                        String suffix = FileUtils.getFileSuffix(idCardImgFront);
+                        String outPath = baseDir + "\\身份证图片正面" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(idCardImgFront, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(idCardImgBack)) {
+                        String suffix = FileUtils.getFileSuffix(idCardImgBack);
+                        String outPath = baseDir + "\\身份证图片反面" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(idCardImgBack, outPath);
+                    }
+                    if (nurseCertificate != null && !nurseCertificate.isEmpty()) {
+                        for (Object o : nurseCertificate) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\护士证\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(recommendationFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(recommendationFileUrl);
+                        String outPath = baseDir + "\\盖章的省市推荐意见文件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(recommendationFileUrl, outPath);
+                    }
+
+                    /////////////////////////////////
+                    if (FileUtils.isExist(baseDir)) {
+                        FileUtils.renameTo(baseDir, baseDir + "【完毕】");
+                        PrintUtils.println("处理完毕");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FileUtils.deleteFiles(baseDir);
+                }
+            });
+        }
+        threadPool.shutdown();
+        while (true) {
+            if (threadPool.isTerminated()) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * 视频：videoUrl，辅助材料地址：otherStuffUrl，发明照片：innovatePhoto，护士执业证图片：nurseNumberPhoto，证件照：userPicUrl
+     *
+     * @return void
+     * @author wengym
+     * @date 2024/1/15 14:36
+     */
+    @Test
+    public void handleContributeScienceReward() throws Exception {
+        String path = "C:\\Users\\Administrator\\Desktop\\contribute_science_reward.xlsx";
+        JSONObject jsonObject = EasyExcelUtils.readFile(path);
+        JSONArray data = jsonObject.getJSONArray("data");
+        ExecutorService threadPool = ThreadUtils.createThreadPool();
+        for (Object m : data) {
+            threadPool.execute(() -> {
+                LinkedHashMap<Integer, String> single = (LinkedHashMap) m;
+                String projectName = single.get(8);
+                projectName = projectName.replace("/", "-");
+                projectName = projectName.replace("+", "-");
+                projectName = projectName.replace(" ", "");
+                String majorAuthorName = single.get(7);
+                String sex = CommonUtil.isNullStr(single.get(13)) ? "未知" : single.get(13);
+                String cellPhone = single.get(11);
+                String scienceYear = single.get(81);
+                String workType = single.get(80);
+                if (CommonUtil.isNullStr(workType)) {
+                    workType = "旧版科技奖";
+                } else {
+                    if ("BOOK".equals(workType)) {
+                        workType = "科普图书";
+                    }
+                    if ("VIDEO".equals(workType)) {
+                        workType = "科普短视频";
+                    }
+                    if ("FORMAL".equals(workType)) {
+                        workType = "新版科技奖";
+                    }
+                }
+                // 主申报人标准证件照照片
+                JSONArray userPic = JSONArray.parseArray(single.get(14));
+                // 视频
+                JSONArray videoUrl = JSONArray.parseArray(single.get(66));
+                // 其他证明材料
+                JSONArray otherSupportMaterialUrl = JSONArray.parseArray(single.get(87));
+                // 附件材料
+                String fileUrl = single.get(88);
+                // 省份推荐意见附件
+                String provinceOpinionFileUrl = single.get(89);
+                // 附件材料压缩包
+                String otherFileUrl = single.get(90);
+                // 附件材料1到4
+                String otherFileUrl1 = single.get(91);
+                String otherFileUrl2 = single.get(92);
+                String otherFileUrl3 = single.get(93);
+                String otherFileUrl4 = single.get(94);
+
+                PrintUtils.println(projectName + "-" + majorAuthorName + "-" + sex + "-" + cellPhone + "-" + scienceYear);
+                String baseName = "-" + majorAuthorName + "-" + projectName;
+
+                String baseDir = "C:\\Users\\Administrator\\Desktop\\科技奖\\" + scienceYear + "\\" + workType + "\\" + majorAuthorName + "-" + cellPhone + "-" + sex + "-" + projectName + "";
+                if (FileUtils.isExist(baseDir + "【完毕】")) {
+                    return;
+                }
+                FileUtils.deleteFiles(baseDir);
+                try {
+                    if (userPic != null && !userPic.isEmpty()) {
+                        for (Object o : userPic) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            if (suffix.length() > 16) {
+                                continue;
+                            }
+                            String dir = baseDir + "\\主申报人标准证件照照片\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            try {
+                                FileUtils.downloadNetworkFile(url, outPath);
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                    if (videoUrl != null && !videoUrl.isEmpty()) {
+                        for (Object o : videoUrl) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String safeVidelUrl = PlayUtil.getSafeUrl(url, 120, "");
+                            String dir = baseDir + "\\视频\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(safeVidelUrl, outPath);
+                        }
+                    }
+                    if (otherSupportMaterialUrl != null && !otherSupportMaterialUrl.isEmpty()) {
+                        for (Object o : otherSupportMaterialUrl) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            if (majorAuthorName.equals("申琳")) {
+                                PrintUtils.println(majorAuthorName);
+                            }
+                            if (url.contains("uploadId")) {
+                                url = url.replaceAll("\\?.*", "");
+                            }
+                            if (CommonUtil.isNullStr(url)) {
+                                continue;
+                            }
+                            String suffix = FileUtils.getFileSuffix(url);
+                            if (suffix.length() > 16) {
+                                continue;
+                            }
+                            String dir = baseDir + "\\其他证明材料\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(fileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(fileUrl);
+                        String outPath = baseDir + "\\附件材料" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(fileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(provinceOpinionFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(provinceOpinionFileUrl);
+                        String outPath = baseDir + "\\省份推荐意见附件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(provinceOpinionFileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl);
+                        String outPath = baseDir + "\\附件材料压缩包" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl1)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl1);
+                        String outPath = baseDir + "\\附件材料1" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl1, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl2)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl2);
+                        String outPath = baseDir + "\\附件材料2" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl2, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl3)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl3);
+                        String outPath = baseDir + "\\附件材料3" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl3, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl4)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl4);
+                        String outPath = baseDir + "\\附件材料4" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl4, outPath);
+                    }
+
+                    /////////////////////////////////
+                    if (FileUtils.isExist(baseDir)) {
+                        FileUtils.renameTo(baseDir, baseDir + "【完毕】");
+                        PrintUtils.println("处理完毕");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FileUtils.deleteFiles(baseDir);
+                }
+            });
+        }
+        threadPool.shutdown();
+        while (true) {
+            if (threadPool.isTerminated()) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * 视频：videoUrl，辅助材料地址：otherStuffUrl，发明照片：innovatePhoto，护士执业证图片：nurseNumberPhoto，证件照：userPicUrl
+     *
+     * @return void
+     * @author wengym
+     * @date 2024/1/15 14:36
+     */
+    @Test
+    public void handleContributeInnovate() throws Exception {
+        String path = "C:\\Users\\Administrator\\Desktop\\contribute_innovate.xlsx";
+        JSONObject jsonObject = EasyExcelUtils.readFile(path);
+        JSONArray data = jsonObject.getJSONArray("data");
+        ExecutorService threadPool = ThreadUtils.createThreadPool();
+        for (Object m : data) {
+            threadPool.execute(() -> {
+                LinkedHashMap<Integer, String> single = (LinkedHashMap) m;
+                String innovateName = single.get(1);
+                innovateName = FileUtils.validateFileName(innovateName);
+                String userName = single.get(4);
+                String gender = "1".equals(single.get(5)) ? "男" : "女";
+                String cellPhone = single.get(9);
+                String innovateYear = single.get(34);
+                // 视频
+                JSONArray videoUrl = JSONArray.parseArray(single.get(17));
+                // 辅助材料
+                JSONArray otherStuffUrl = JSONArray.parseArray(single.get(20));
+                // 发明照片
+                JSONArray innovatePhoto = JSONArray.parseArray(single.get(21));
+                // 护士执业证图片
+                JSONArray nurseNumberPhoto = JSONArray.parseArray(single.get(37));
+                // 证件照
+                JSONArray userPicUrl = JSONArray.parseArray(single.get(40));
+                // PDF盖章文件
+                String fileUrl = single.get(54);
+                // 评审意见文件
+                String adviceFileUrl = single.get(55);
+                // 主申报人标准证件照照片
+                JSONArray userPic = JSONArray.parseArray(single.get(71));
+                // 附件材料压缩包
+                String otherFileUrl = single.get(98);
+                // 附件材料1到10
+                String otherFileUrl1 = single.get(99);
+                String otherFileUrl2 = single.get(100);
+                String otherFileUrl3 = single.get(101);
+                String otherFileUrl4 = single.get(102);
+                String otherFileUrl5 = single.get(103);
+                String otherFileUrl6 = single.get(104);
+                String otherFileUrl7 = single.get(105);
+                String otherFileUrl8 = single.get(106);
+                String otherFileUrl9 = single.get(107);
+                String otherFileUrl10 = single.get(108);
+                // 证明照片
+                String invoatePic = single.get(109);
+                // 盖章的推荐单位评审意见文件
+                String reviewCommentUrl = single.get(113);
+
+                PrintUtils.println(innovateName + "-" + userName + "-" + gender + "-" + cellPhone + "-" + innovateYear);
+                String baseName = "-" + userName + "-" + innovateName;
+                String baseDir = "C:\\Users\\Administrator\\Desktop\\创新发明\\" + innovateYear + "\\" + userName + "-" + cellPhone + "-" + gender + "-" + innovateName + "";
+                if (FileUtils.isExist(baseDir + "【完毕】")) {
+                    return;
+                }
+                FileUtils.deleteFiles(baseDir);
+                if ("张爱英".equals(userName)) {
+                    PrintUtils.println(userName);
+                }
+                try {
+                    if (videoUrl != null && !videoUrl.isEmpty()) {
+                        for (Object o : videoUrl) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            if (name.endsWith(".mp4")) {
+                                name = name.replace(".mp4", "");
+                            }
+                            if (name.endsWith(".m4v")) {
+                                name = name.replace(".m4v", "");
+                            }
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String safeVidelUrl = PlayUtil.getSafeUrl(url, 120, "");
+                            String dir = baseDir + "\\视频\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(safeVidelUrl, outPath);
+                        }
+                    }
+                    if (otherStuffUrl != null && !otherStuffUrl.isEmpty()) {
+                        for (Object o : otherStuffUrl) {
+                            JSONObject object;
+                            try {
+                                object = (JSONObject) o;
+                            } catch (Exception e) {
+                                continue;
+                            }
+                            String name = object.getString("name");
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            if (CommonUtil.isNullStr(url)) {
+                                continue;
+                            }
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\辅助材料\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (innovatePhoto != null && !innovatePhoto.isEmpty()) {
+                        for (Object o : innovatePhoto) {
+                            JSONObject object;
+                            try {
+                                object = (JSONObject) o;
+                            } catch (Exception e) {
+                                continue;
+                            }
+                            String name = object.getString("name");
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            if (url.startsWith("blob")) {
+                                continue;
+                            }
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\发明照片\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+
+                        }
+                    }
+                    if (nurseNumberPhoto != null && !nurseNumberPhoto.isEmpty()) {
+                        int index = 1;
+                        for (Object o : nurseNumberPhoto) {
+                            JSONObject object = (JSONObject) o;
+                            String name = "护士执业证图片" + index;
+                            index++;
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            if (url.startsWith("blob")) {
+                                continue;
+                            }
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\护士执业证图片\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (userPicUrl != null && !userPicUrl.isEmpty()) {
+                        for (Object o : userPicUrl) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\证件照\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(fileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(fileUrl);
+                        String outPath = baseDir + "\\PDF盖章文件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(fileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(adviceFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(adviceFileUrl);
+                        String outPath = baseDir + "\\评审意见文件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(adviceFileUrl, outPath);
+                    }
+                    if (userPic != null && !userPic.isEmpty()) {
+                        for (Object o : userPic) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = FileUtils.validateFileName(name);
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\主申报人标准证件照照片\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl);
+                        String outPath = baseDir + "\\附件材料压缩包" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl1)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl1);
+                        String outPath = baseDir + "\\附件材料1" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl1, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl2)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl2);
+                        String outPath = baseDir + "\\附件材料2" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl2, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl3)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl3);
+                        String outPath = baseDir + "\\附件材料3" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl3, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl4)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl4);
+                        String outPath = baseDir + "\\附件材料4" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl4, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl5)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl5);
+                        String outPath = baseDir + "\\附件材料5" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl5, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl6)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl6);
+                        String outPath = baseDir + "\\附件材料6" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl6, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl7)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl7);
+                        String outPath = baseDir + "\\附件材料7" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl7, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl8)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl8);
+                        String outPath = baseDir + "\\附件材料8" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl8, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl9)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl9);
+                        String outPath = baseDir + "\\附件材料9" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl9, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(otherFileUrl10)) {
+                        String suffix = FileUtils.getFileSuffix(otherFileUrl10);
+                        String outPath = baseDir + "\\附件材料10" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(otherFileUrl10, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(invoatePic) && !"[]".equals(invoatePic)) {
+                        if (invoatePic.contains("[{")) {
+                            JSONArray invoatePicArr = JSONArray.parseArray(invoatePic);
+                            for (Object o : invoatePicArr) {
+                                JSONObject object = (JSONObject) o;
+                                String name = object.getString("name");
+                                name = FileUtils.validateFileName(name);
+                                String url = object.getString("url");
+                                String suffix = FileUtils.getFileSuffix(url);
+                                String dir = baseDir + "\\证明照片\\";
+                                String outPath = dir + name + baseName + "." + suffix;
+                                FileUtils.downloadNetworkFile(url, outPath);
+                            }
+                        } else {
+                            String suffix = FileUtils.getFileSuffix(invoatePic);
+                            String outPath = baseDir + "\\证明照片" + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(invoatePic, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(reviewCommentUrl)) {
+                        String suffix = FileUtils.getFileSuffix(reviewCommentUrl);
+                        String outPath = baseDir + "\\盖章的推荐单位评审意见文件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(reviewCommentUrl, outPath);
+                    }
+                    /////////////////////////////////
+                    if (FileUtils.isExist(baseDir)) {
+                        FileUtils.renameTo(baseDir, baseDir + "【完毕】");
+                        PrintUtils.println("处理完毕");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FileUtils.deleteFiles(baseDir);
+                }
+            });
+        }
+        threadPool.shutdown();
+        while (true) {
+            if (threadPool.isTerminated()) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * 附件：annexes，盖章的申请书：stampApplyBookUrl，伦理批件：ethicalApproval，形式审查明细表：reviewDetailFileUrl
+     *
+     * @return void
+     * @author wengym
+     * @date 2024/1/15 14:36
+     */
+    @Test
+    public void handleContributeResearchTopic() throws Exception {
+        String path = "C:\\Users\\Administrator\\Desktop\\contribute_research_topic.xlsx";
+        JSONObject jsonObject = EasyExcelUtils.readFile(path);
+        JSONArray data = jsonObject.getJSONArray("data");
+        ExecutorService threadPool = ThreadUtils.createThreadPool();
+        for (Object m : data) {
+            threadPool.execute(() -> {
+                LinkedHashMap<Integer, String> single = (LinkedHashMap) m;
+                String userName = single.get(22);
+                String gender = single.get(23);
+                String cellPhone = single.get(28);
+                String topicName = single.get(39);
+                topicName = topicName.replace("/", "-");
+                topicName = topicName.replace("+", "-");
+                topicName = topicName.replace(" ", "");
+                JSONArray annexes = JSONArray.parseArray(single.get(65));
+                String stampApplyBookUrl = single.get(66);
+                String ethicalApproval = single.get(69);
+                String reviewDetailFileUrl = single.get(70);
+                PrintUtils.println(annexes + "-" + stampApplyBookUrl + "-" + ethicalApproval + "-" + reviewDetailFileUrl);
+                String baseName = "-" + userName + "-" + topicName;
+                String baseDir = "C:\\Users\\Administrator\\Desktop\\科研课题\\" + userName + "-" + cellPhone + "-" + gender + "-" + topicName + "";
+                if (FileUtils.isExist(baseDir + "【完毕】")) {
+                    return;
+                }
+                if (userName.equals("张志霞")) {
+                    PrintUtils.println(userName);
+                }
+                FileUtils.deleteFiles(baseDir);
+                try {
+                    if (annexes != null && !annexes.isEmpty()) {
+                        for (Object o : annexes) {
+                            JSONObject object = (JSONObject) o;
+                            String name = object.getString("name");
+                            name = name.replace(".", "-");
+                            name = name.replace(" ", "");
+                            name = name.replace(",", "-");
+                            name = name.replace("'", "-");
+                            name = name.replace(":", "-");
+                            String url = object.getString("url");
+                            String suffix = FileUtils.getFileSuffix(url);
+                            String dir = baseDir + "\\附件\\";
+                            String outPath = dir + name + baseName + "." + suffix;
+                            FileUtils.downloadNetworkFile(url, outPath);
+                        }
+                    }
+                    if (!CommonUtil.isNullStr(stampApplyBookUrl)) {
+                        String suffix = FileUtils.getFileSuffix(stampApplyBookUrl);
+                        String outPath = baseDir + "\\盖章的申请书" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(stampApplyBookUrl, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(ethicalApproval)) {
+                        String suffix = FileUtils.getFileSuffix(ethicalApproval);
+                        String outPath = baseDir + "\\伦理批件" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(ethicalApproval, outPath);
+                    }
+                    if (!CommonUtil.isNullStr(reviewDetailFileUrl)) {
+                        String suffix = FileUtils.getFileSuffix(reviewDetailFileUrl);
+                        String outPath = baseDir + "\\形式审查明细表" + baseName + "." + suffix;
+                        FileUtils.downloadNetworkFile(reviewDetailFileUrl, outPath);
+                    }
+                    if (FileUtils.isExist(baseDir)) {
+                        FileUtils.renameTo(baseDir, baseDir + "【完毕】");
+                        PrintUtils.println("处理完毕");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FileUtils.deleteFiles(baseDir);
+                }
+            });
+        }
+        threadPool.shutdown();
+        while (true) {
+            if (threadPool.isTerminated()) {
+                break;
+            }
+        }
+    }
+
+    @Test
+    public void handleMeetSignData() throws Exception {
+        String path = "C:\\Users\\Administrator\\Desktop\\data1.json";
+        String data = FileUtils.readFrom(path);
+        PrintUtils.println(data);
+        JSONArray jsonArray = JSONObject.parseObject(data).getJSONArray("RECORDS");
+        List<MeetSignInModel> list = jsonArray.toJavaList(MeetSignInModel.class);
+        int index = 1;
+        for (MeetSignInModel m : list) {
+            m.setIndex(index + "");
+            m.setAge(CommonUtil.isNullStr(m.getIdCard()) ? "无" : DateUtils.getAge(IdCardUtils.getBirthday(m.getIdCard())));
+            ImageUtils.base64StrToImage(m.getSignInImg().substring(m.getSignInImg().indexOf(",") + 1, m.getSignInImg().length()), "src/sign" + index + ".png");
+            BufferedImage bufferedImage = ImageIO.read(new File("src/sign" + index + ".png"));
+            bufferedImage = ImageUtils.rotateImage90(bufferedImage);
+            bufferedImage = ImageUtils.zoomImage(bufferedImage, 0.3f, 0.3f);
+            ImageIO.write(bufferedImage, "png", new File("src/sign" + index + ".png"));
+            m.setSignImg(new File("src/sign" + index + ".png"));
+            index++;
+        }
+        EasyExcelUtils.exportFile(list, "C:\\Users\\Administrator\\Desktop\\北京护理学会成立100周年暨第十二届分支机构换届大会.xlsx");
+    }
 
     @Test
     public void handleMemberData() {
