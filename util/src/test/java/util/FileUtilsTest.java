@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ import java.util.*;
 public class FileUtilsTest {
 
     @Test
-    public void handleNetworkFile() {
+    public void handleNetworkFile() throws IOException {
         //String path = "C:\\Users\\Administrator\\Desktop\\导出通过学会审核的工作委员会数据1.xlsx";
         String path = "C:\\Users\\Administrator\\Desktop\\北京中西医图像数据处理1.xlsx";
         JSONObject result = EasyExcelUtils.readFile(path);
@@ -103,7 +104,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void downloadNetImageTest() {
+    public void downloadNetImageTest() throws IOException {
         String basePath = "D:/";
         String url1 = "https://nursevideo.oss-cn-beijing.aliyuncs.com/meet/efa66bbaff0c40bc1d004f32707ede991659946068472.1%20%E2%80%9C%E4%B8%AD%E5%8D%8E%E6%8A%A4%E7%90%86%E5%AD%A6%E4%BC%9A%E5%88%9B%E6%96%B0%E5%8F%91%E6%98%8E%E5%A5%96%E2%80%9D%20--%20%E4%B8%80%E7%A7%8D%E5%A4%9A%E5%8A%9F%E8%83%BD%E6%99%BA%E8%83%BD%E5%8A%A9%E8%A1%8C%E5%99%A8%20%20%E9%87%91%E7%8F%A0%E8%8B%91%E8%BA%AB%E4%BB%BD%E8%AF%81";
         String path1 = basePath + "图片" + System.currentTimeMillis() + "." + FileUtils.getFileSuffix(url1);

@@ -1,20 +1,12 @@
 package com.ncepu.util;
 
-import com.ncepu.util.SystemUtils.model.Sys;
-
-import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.*;
 import java.security.MessageDigest;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -333,7 +325,7 @@ public class FileUtils {
     }
 
     /**
-     * 下载远程的网络文件
+     * 下载远程的网络文件（覆盖模式）
      * 不要把输入流中的内容一次性读入缓存，否则会因为输入流内容过多导致内容溢出问题
      * 在 Java 中，使用 file.createNewFile() 方法创建文件时，如果指定的目录不存在，它不会自动创建目录。createNewFile() 方法只会创建文件本身，而不会创建父目录。
      * 如果希望在创建文件时同时创建目录，可以使用 file.mkdirs() 方法。mkdirs() 方法将创建所有不存在的目录，包括父目录和子目录。
@@ -344,7 +336,7 @@ public class FileUtils {
      * @author wengym
      * @date 2022/8/3 10:38
      */
-    public static void downloadNetworkFile(String url, String savePath) {
+    public static void downloadNetworkFile(String url, String savePath) throws IOException {
         savePath = FileUtils.urlDecode(savePath);
         File file = new File(savePath);
         File parentDir = file.getParentFile();
@@ -358,7 +350,7 @@ public class FileUtils {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
+                throw e;
             }
         }
         InputStream in = null;
@@ -372,6 +364,9 @@ public class FileUtils {
             conn.setConnectTimeout(1000);
             // 获取输入流
             in = conn.getInputStream();
+            // 默认情况下，FileOutputStream 的构造函数会将文件以覆盖模式打开，即如果文件已经存在，则会先删除原有文件，然后创建新的文件进行写入操作。
+            // 如果你希望在文件已经存在时追加内容而不是重新下载，可以使用 FileOutputStream 的另一个构造函数，并将第二个参数设置为 true，表示以追加模式打开文件。
+            // 这样，如果文件已经存在，新的内容将会追加到文件末尾，而不是覆盖原有文件。
             out = new FileOutputStream(savePath);
             byte[] buffer = new byte[1024];
             int readLength;
@@ -380,10 +375,13 @@ public class FileUtils {
             }
         } catch (ProtocolException e) {
             e.printStackTrace();
+            throw e;
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;
         } finally {
             if (out != null) {
                 try {
@@ -396,6 +394,30 @@ public class FileUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 校验文件名
+     *
+     * @param fileName
+     *
+     * @author wengym
+     *
+     * @date 2024/1/15 19:19
+     *
+     * @return java.lang.String
+     */
+    public static String validateFileName(String fileName) {
+        // 移除非法字符
+        String cleanedFileName = fileName.replaceAll("[\\\\/:*?\"<>|]", "_");
+
+        // 截取文件名的合法长度
+        // 假设文件名的最大长度为 255
+        int maxLength = 255;
+        if (cleanedFileName.length() > maxLength) {
+            cleanedFileName = cleanedFileName.substring(0, maxLength);
+        }
+        return cleanedFileName;
     }
 
     /**
@@ -559,6 +581,53 @@ public class FileUtils {
     }
 
     /**
+     * 修改目录或文件的名称
+     * 修改目录名称时，旧的名称和新的名称的后面都不用加斜杠
+     *
+     * @param oldName
+     *
+     * @param newName
+     *
+     * @author wengym
+     *
+     * @date 2024/1/15 15:44
+     *
+     * @return java.lang.Boolean
+     */
+    public static Boolean renameTo(String oldName, String newName) {
+        if (oldName == null || "".equals(oldName.trim())) {
+            return false;
+        }
+        if (newName == null || "".equals(newName.trim())) {
+            return false;
+        }
+        File oldFile = new File(oldName);
+        File newFile = new File(newName);
+        Boolean result = oldFile.renameTo(newFile);
+        return  result;
+    }
+
+    /**
+     * 目录或文件是否存在
+     *
+     * @param path
+     *
+     * @author wengym
+     *
+     * @date 2024/1/15 15:44
+     *
+     * @return java.lang.Boolean
+     */
+    public static Boolean isExist(String path) {
+        if (path == null || "".equals(path.trim())) {
+            return false;
+        }
+        File file = new File(path);
+        Boolean isExist = file.exists();
+        return  isExist;
+    }
+
+    /**
      * 删除某个文件、某个空目录、某个不为空的目录
      * File.delete()只能删除某个文件或者空目录，要想要删除某个目录及其所有子文件和子目录，要使用递归进行删除。
      *
@@ -708,6 +777,10 @@ public class FileUtils {
             byte[] bytes = new byte[1024];
             while (in.read(bytes) > 0) {
                 sb.append(new String(bytes));
+                // 需要清空字节数组，否则末尾可能会有一些垃圾数据，如倒数第二趟时，存的数据为：1，2，3，4，5，
+                // 最后一趟的数据为6，7，如果不及时清空数据，会导致最后一趟的拼接数据为：6，7，3，4，5，
+                // 多出了3，4，5这三个垃圾数据
+                Arrays.fill(bytes, (byte) 0);
             }
             return sb.toString();
         } catch (FileNotFoundException e) {
