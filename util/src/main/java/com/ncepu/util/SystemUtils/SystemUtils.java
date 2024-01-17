@@ -1,6 +1,7 @@
 package com.ncepu.util.SystemUtils;
 
 import com.ncepu.util.MathUtils;
+import com.ncepu.util.PrintUtils;
 import com.sun.jna.Platform;
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;
@@ -12,9 +13,12 @@ import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 
+import java.nio.charset.Charset;
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -32,6 +36,91 @@ public class SystemUtils {
     private static HardwareAbstractionLayer hardwareAbstractionLayer = null;
 
     /**
+     * 获取系统下载速度（KB/s）
+     *
+     * @author wengym
+     *
+     * @date 2024/1/16 11:23
+     *
+     * @return java.lang.String
+     */
+    public static String getDownloadSpeed() {
+        try {
+            Process process = Runtime.getRuntime().exec("netstat -e");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.forName("GBK")));
+            String line;
+            long totalBytesReceived = 0;
+
+            while ((line = reader.readLine()) != null) {
+                PrintUtils.println(line);
+                if (line.contains("接收的1")) {
+                    String[] parts = line.split("\\s+");
+                    totalBytesReceived = Long.parseLong(parts[parts.length - 1]);
+                }
+            }
+            process.waitFor();
+            reader.close();
+            // 下载速度（KB/s）
+            double downloadSpeed = totalBytesReceived / 1024.0;
+            if (downloadSpeed > 1024) {
+                downloadSpeed = totalBytesReceived / 1024.0 / 1024.0;
+                return downloadSpeed + "MB/s";
+            }
+            return downloadSpeed + "KB/s";
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "0KB/s";
+    }
+
+    /**
+     * 获取系统上传速度（KB/s）
+     *
+     * @author wengym
+     *
+     * @date 2024/1/16 11:23
+     *
+     * @return java.lang.String
+     */
+    public static String getUploadSpeed() {
+        long startTime = System.currentTimeMillis();
+        try {
+            Process process = Runtime.getRuntime().exec("netstat -e");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.forName("GBK")));
+            String line;
+            long totalBytesSent = 0;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("字节已发送")) {
+                    String[] parts = line.split("\\s+");
+                    long currentBytesSent = Long.parseLong(parts[parts.length - 1]);
+                    double sendSpeed = calculateSpeed(currentBytesSent, totalBytesSent, startTime);
+                    PrintUtils.println(sendSpeed);
+                }
+            }
+            process.waitFor();
+            reader.close();
+            // 上传速度（KB/s）
+            double uploadSpeed = totalBytesSent / 1024.0;
+            if (uploadSpeed > 1024) {
+                uploadSpeed = totalBytesSent / 1024.0 / 1024.0;
+                return uploadSpeed + "MB/s";
+            }
+            return uploadSpeed + "KB/s";
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "0KB/s";
+    }
+
+    private static double calculateSpeed(long currentBytes, long previousBytes, long startTime) {
+        long currentTime = System.currentTimeMillis();
+        long timeInterval = currentTime - startTime;
+        double speed = (currentBytes - previousBytes) / (timeInterval / 1000.0);
+        return speed;
+    }
+
+    /**
      * 获取系统的内存信息
      *
      * @author wengym
@@ -46,10 +135,26 @@ public class SystemUtils {
         double divNum = 1024 * 1024 * 1024;
         String total = MathUtils.toFixed((memory.getTotal() / divNum), 2);
         String used = MathUtils.toFixed(((memory.getTotal() - memory.getAvailable()) / divNum), 2);
+        String percentUsed = MathUtils.getPercentNum((double)(memory.getTotal() - memory.getAvailable()) / memory.getTotal(), 0);
         String available = MathUtils.toFixed((memory.getAvailable() / divNum), 2);
         return "内存信息——" + "总内存：" + total + "GB，" +
-                "已用内存：" + used + "GB，" +
+                "已用内存：" + used + "GB，（" + percentUsed + "）" +
                 "空闲内存：" + available + "GB";
+    }
+
+    /**
+     * 获取内存占用百分比
+     * @author wengym
+     *
+     * @date 2024/1/16 11:19
+     *
+     * @return java.lang.String
+     */
+    public static String getMemoryUsedPercent() {
+        HardwareAbstractionLayer hardwareAbstractionLayer = getHardwareAbstractionLayer();
+        GlobalMemory memory = hardwareAbstractionLayer.getMemory();
+        String percentUsed = MathUtils.getPercentNum((double)(memory.getTotal() - memory.getAvailable()) / memory.getTotal(), 0);
+        return percentUsed;
     }
 
     /**

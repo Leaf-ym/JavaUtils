@@ -15,6 +15,14 @@ import java.awt.*;
  */
 public class SystemUtilsTest {
     @Test
+    public void testSpeed() {
+        String r4 = SystemUtils.getDownloadSpeed();
+        PrintUtils.println(r4);
+        String r5 = SystemUtils.getUploadSpeed();
+        PrintUtils.println(r5);
+    }
+
+    @Test
     public void testGetMemoryInfo() {
         String r1 = SystemUtils.getMemoryInfo();
         PrintUtils.println(r1);
