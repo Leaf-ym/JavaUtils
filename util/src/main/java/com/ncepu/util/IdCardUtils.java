@@ -738,4 +738,37 @@ public class IdCardUtils extends StringUtils {
 
         return retValue;
     }
+
+    /**
+     * 获取出生日期  yyyy年MM月dd日
+     * @param IDCard
+     * @return
+     */
+    public static String getBirthday(String IDCard){
+        String birthday="";
+        String year="";
+        String month="";
+        String day="";
+        if (StringUtils.isNotBlank(IDCard)){
+            //15位身份证号
+            if (IDCard.length() == 15){
+                // 身份证上的年份(15位身份证为1980年前的)
+                year = "19" + IDCard.substring(6, 8);
+                //身份证上的月份
+                month = IDCard.substring(8, 10);
+                //身份证上的日期
+                day= IDCard.substring(10, 12);
+                //18位身份证号
+            }else if(IDCard.length() == 18){
+                // 身份证上的年份
+                year = IDCard.substring(6).substring(0, 4);
+                // 身份证上的月份
+                month = IDCard.substring(10).substring(0, 2);
+                //身份证上的日期
+                day=IDCard.substring(12).substring(0,2);
+            }
+            birthday=year+"年"+month+"月"+day+"日";
+        }
+        return birthday;
+    }
 }
